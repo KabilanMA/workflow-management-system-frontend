@@ -24,7 +24,7 @@ const REGISTER_URL = '/register';
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -59,7 +59,7 @@ export default function RegisterForm() {
     const password = methods.getValues('password');
     console.log(PWD_REGEX.test(password));
     if (!USER_REGEX.test(firstName) || !USER_REGEX.test(lastName) || !PWD_REGEX.test(password)) {
-      errorToast("Not Registered");
+      errorToast("Not Registered <<REGEX FAIL>>");
     } else {
       // successToast("Registering");
       // console.log("Registering");
