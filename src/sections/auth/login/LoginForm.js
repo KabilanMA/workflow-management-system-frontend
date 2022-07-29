@@ -39,8 +39,9 @@ export default function LoginForm() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async () => {
-    navigate('/dashboard', { replace: true });
+  const onSubmit = async (data) => {
+    // navigate('/dashboard', { replace: true });
+    console.log(data)
   };
 
   return (

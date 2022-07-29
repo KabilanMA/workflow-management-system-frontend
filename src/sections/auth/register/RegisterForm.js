@@ -1,19 +1,25 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Stack, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+
 // components
 import { errorToast, successToast } from '../../../components/Toasts';
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
+import axios from "../../../api/axios"
+
 // REGEX
 const USER_REGEX = /^[a-zA-Z][a-zA-Z]{2,50}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,50}$/;
+
+const REGISTER_URL = '/register';
 
 // ----------------------------------------------------------------------
 
@@ -52,11 +58,40 @@ export default function RegisterForm() {
     const email = methods.getValues('email');
     const password = methods.getValues('password');
     console.log(PWD_REGEX.test(password));
-    if(!USER_REGEX.test(firstName) || !USER_REGEX.test(lastName) || !PWD_REGEX.test(password)) {
+    if (!USER_REGEX.test(firstName) || !USER_REGEX.test(lastName) || !PWD_REGEX.test(password)) {
       errorToast("Not Registered");
-    }else {
-      successToast("Registering");
-      console.log("Registering");
+    } else {
+      // successToast("Registering");
+      // console.log("Registering");
+      console.log(email, password)
+
+      try {
+        const response = await axios.post(REGISTER_URL,
+          JSON.stringify({ email, pwd: password }),
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+          }
+        );
+        console.log(response?.data);
+        console.log(response?.accessToken);
+        console.log(JSON.stringify(response))
+        // setSuccess(true);
+        successToast("Registering");
+
+        // setEmail('');
+        // setPwd('');
+        // setMatchPwd('');
+      } catch (err) {
+        if (!err?.response) {
+          errorToast('No Server Response');
+        } else if (err.response?.status === 409) {
+          errorToast('email Taken');
+        } else {
+          errorToast('Registration Failed')
+        }
+        // errRef.current.focus();
+      }
     }
 
     // navigate('/login', { replace: true });
