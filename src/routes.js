@@ -10,6 +10,8 @@ import NotFound from './pages/Page404';
 import Register from './pages/Register';
 import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
+import Task from './pages/Task';
+import NewTask from './pages/NewTask';
 
 import RequireAuth from './sections/auth/RequireAuth';
 import Page401 from './pages/Page401';
@@ -43,9 +45,13 @@ export default function Router() {
 
         <Route path="products" element={<Products />} />
         <Route path="blog" element={<Blog />} />
+        <Route path='task' element={<Task />}/>
+        <Route path="task/new" element={<NewTask />} />
       </Route>
+      
 
       <Route path='/unauth' element={<Page401 />} />
+      <Route path='*' element={<Navigate to="/404" />}/>
     </Routes>
   );
   // return useRoutes([

@@ -17,7 +17,7 @@ import axios from "../../../api/axios"
 
 // REGEX
 const USER_REGEX = /^[a-zA-Z][a-zA-Z]{2,50}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,50}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,80}$/;
 
 const REGISTER_URL = '/register';
 
@@ -29,10 +29,10 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().required('First name required'),
-    lastName: Yup.string().required('Last name required'),
+    firstName: Yup.string().matches(USER_REGEX, "Name should only contain between 2 to 50 English alphabet characters").required('First name required'),
+    lastName: Yup.string().matches(USER_REGEX, "Name should only contain between 2 to 50 English alphabet characters").required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required'),
+    password: Yup.string().matches(PWD_REGEX, "Password should be between 8 to 80 characters of alphabets, numbers and special characters (!@#$%) only").required('Password is required'),
   });
 
   const defaultValues = {
@@ -101,7 +101,11 @@ export default function RegisterForm() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name="firstName" label="First name" />
+          <RHFTextField 
+            name="firstName" 
+            label="First name"
+            pattern={USER_REGEX}
+          />
           <RHFTextField name="lastName" label="Last name" />
         </Stack>
 
