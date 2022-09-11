@@ -72,7 +72,7 @@ export default function LoginForm() {
       const roles = response?.data?.roles;
 
       // setAuth({ email, pwd, roles, accessToken });
-      localStorage.setItem("user", JSON.stringify({ email: data.email, pwd: data.password, roles, accessToken }))
+      localStorage.setItem("user", JSON.stringify({ email: data.email, roles, accessToken }))
 
       // console.log("aaaaaaa", auth)
       console.log("lllllllll", JSON.parse(localStorage.getItem("user")))
