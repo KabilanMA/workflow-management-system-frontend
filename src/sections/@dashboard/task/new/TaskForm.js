@@ -12,13 +12,12 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 // import axios from '../../../../api/axios';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
-import { errorToast } from "../../../../components/Toasts"
 
 import CurrencyInputField from '../../../../components/CurrencyInputField';
 import SelectTextField from '../../../../components/SelectTextField';
 import SubTask from './SubTask';
 
-const ALL_TASKS_URL = "/categories"
+const ALL_CATEGORIES_URL = "/categories"
 
 // const tasks = [
 //   {
@@ -48,10 +47,10 @@ export default function TaskForm() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(ALL_TASKS_URL, {
+      const response = await axios.get(ALL_CATEGORIES_URL, {
         withCredentials: true
       });
-      console.log(JSON.stringify(response?.data));
+      // console.log(JSON.stringify(response?.data));
       setTasks2(response?.data)
       setIsLoading(false)
     }

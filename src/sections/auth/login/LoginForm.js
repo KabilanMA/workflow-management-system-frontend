@@ -9,8 +9,8 @@ import { Link, Stack, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 
-import axios from '../../../api/axios';
-// import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
+// import axios from '../../../api/axios';
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
 import useLogout from '../../../hooks/useLogOut';
 
 import { errorToast } from '../../../components/Toasts';
@@ -26,7 +26,7 @@ export default function LoginForm() {
   const location = useLocation()
   const logout = useLogout();
   const from = location.state?.from?.pathname || "/dashboard/app"
-  // const axios = useAxiosPrivate()
+  const axios = useAxiosPrivate()
 
   const signOut = async () => {
     await logout();
