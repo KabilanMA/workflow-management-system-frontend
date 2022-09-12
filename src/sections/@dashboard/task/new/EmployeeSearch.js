@@ -28,7 +28,7 @@ export default function EmployeeSearch({ employees, other }) {
       PopperComponent={PopperStyle}
       options={employees}
       // getOptionLabel={(employee) => employee.Name}
-      getOptionLabel={(employee) => employee.name}
+      getOptionLabel={(employee) => employee.firstname}
       // isOptionEqualToValue={(option, value) => option.empId === value.empId}
       isOptionEqualToValue={(option, value) => option._id === value._id}
       renderInput={(params) => (
