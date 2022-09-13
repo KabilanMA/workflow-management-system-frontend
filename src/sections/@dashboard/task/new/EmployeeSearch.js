@@ -19,7 +19,7 @@ EmployeeSearch.propTypes = {
 };
 
 export default function EmployeeSearch({ employees, other }) {
-  console.log(other);
+  // console.log(other);
   return (
     <Autocomplete
       sx={{ mb: 2, width: 320 }}
@@ -27,8 +27,10 @@ export default function EmployeeSearch({ employees, other }) {
       popupIcon={null}
       PopperComponent={PopperStyle}
       options={employees}
-      getOptionLabel={(employee) => employee.Name}
-      isOptionEqualToValue={(option, value) => option.empId === value.empId}
+      // getOptionLabel={(employee) => employee.Name}
+      getOptionLabel={(employee) => employee.firstname}
+      // isOptionEqualToValue={(option, value) => option.empId === value.empId}
+      isOptionEqualToValue={(option, value) => option._id === value._id}
       renderInput={(params) => (
         <TextField
           {...params}

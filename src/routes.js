@@ -17,9 +17,15 @@ import RequireAuth from './sections/auth/RequireAuth';
 import Page401 from './pages/Page401';
 
 const ROLES_LIST = {
-  "admin": 5150,
-  "editor": 1984,
-  "user": 2001
+  "Admin": 2000,
+  "DI": 2001,
+  "CE": 2002,
+  "DIE": 2003,
+  "ME": 2004,
+  "IE": 2005,
+  "EA": 2006,
+  "DmanDIE": 2007,
+  "DmanDI": 2008
 }
 
 // ----------------------------------------------------------------------
@@ -39,7 +45,7 @@ export default function Router() {
         <Route path="app" element={<DashboardApp />} />
 
         {/* Role based authorization example */}
-        <Route path='user' element={<RequireAuth allowedRoles={[ROLES_LIST.admin]} />}>
+        <Route path='user' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin]} />}>
           <Route path="/dashboard/user" element={<User />} />
         </Route>
 
