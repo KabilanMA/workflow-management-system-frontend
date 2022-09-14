@@ -21,7 +21,6 @@ EmployeeSearch.propTypes = {
 
 export default function EmployeeSearch({ employees, onChange}) {
   const [value, setValue] = useState(null);
-
   return (
     <Autocomplete
       sx={{ mb: 2, width: 320 }}
