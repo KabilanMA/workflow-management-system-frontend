@@ -38,7 +38,7 @@ const defaultValues = {
 export default function TaskForm() {
 //   const axios = useAxiosPrivate()
 //   const [tasks2, setTasks2] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   const methods = useForm({defaultValues});
   const { handleSubmit, reset, control, setValue, watch } = methods;
@@ -48,7 +48,7 @@ export default function TaskForm() {
     // If data successfully uploaded to database then refresh the page.
     // window.location.reload(false);
   }
-  setIsLoading(false);
+
 //   useEffect(() => {
     // async function fetchData() {
     //   const response = await axios.get(ALL_CATEGORIES_URL, {
