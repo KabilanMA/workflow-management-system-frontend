@@ -34,10 +34,10 @@ export default function EmployeeSearch({ employees, onChange}) {
       PopperComponent={PopperStyle}
       options={employees}
       getOptionLabel={(employee) => {
-        return employee.Name;
+        return employee.firstname;
       }}
       
-      isOptionEqualToValue={(option, value) => option.empId === value.empId}
+      isOptionEqualToValue={(option, value) => option._id === value._id}
       renderInput={(params) => (
         <TextField
           {...params}

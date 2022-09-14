@@ -16,14 +16,14 @@ import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 const ALL_EMPLOYEES_URL = '/users'
 
 export default function SubTask(props) {
-    const control = props.control;
-    const id = props.id;
-    // console.log("d")
-    const [employees, setEmployee] = useState([]);
-    // const [employees2, setEmployee] = useState([]);
-    const [subTasks, setSubTasks] = useState([]);
-    const [arr, setArr] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+  const control = props.control;
+  const id = props.id;
+  // console.log("d")
+  // const [employees, setEmployee] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [subTasks, setSubTasks] = useState([]);
+  const [arr, setArr] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const axios = useAxiosPrivate();
   const navigate = useNavigate()
@@ -37,60 +37,69 @@ export default function SubTask(props) {
 
   useEffect(() => {
     // create the API request to get the employee names and title.
-    // async function fetchData() {
-    //   const response = await axios.get(ALL_EMPLOYEES_URL, {
-        // withCredentials: true
-    //   });
-    //   console.log(JSON.stringify(response?.data));
-    //   setEmployees2(response?.data)
-    //   setIsLoading(false)
-    // }
-    // fetchData()
+    let isMounted = true
+    const controller = new AbortController()
 
-    const Empdata = [
-      {
-        empId: 2324235343453463,
-        Name: "Kabilan Mahathevan",
-        role: "Divisional Irrigation Engineer",
-        acronym: "DIE",
-        office: "DIE Office",
-        officeLocation: "Matara"
-      },
-      {
-        empId: 2423534634534534,
-        Name: "Senthooran",
-        role: "Draftsman",
-        acronym: "D'man",
-        office: "DIE Office",
-        officeLocation: "Matara"
-      },
-      {
-        empId: 231232131231223,
-        Name: "Tharsigan",
-        role: "Engineering Assistance",
-        acronym: "EA",
-        office: "DIE Office",
-        officeLocation: "Matara"
-      },
-      {
-        empId: 232342387961223,
-        Name: "Thuva",
-        role: "Chief Engineer",
-        acronym: "CE",
-        office: "DIE Office",
-        officeLocation: "Matara"
-      },
-      {
-        empId: 435353252345234,
-        Name: "Dinesh",
-        role: "Mechanical Engineer",
-        acronym: "ME",
-        office: "ME Office",
-        officeLocation: "Halpathota"
-      },
-    ];
-    setEmployee(Empdata);
-    setIsLoading(false);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(ALL_EMPLOYEES_URL, {
+          signal: controller.signal,
+          withCredentials: true
+        });
+        if(isMounted) setEmployees(response?.data)
+        if(isMounted) setIsLoading(false)
+      } catch (err) {
+        console.error("ERROR IN USEEFFECT : ")
+        console.log(err)
+        navigate('/login', { state: { from: location }, replace: true })
+      }
+    }
+    fetchData()
+
+    // const Empdata = [
+    //   {
+    //     empId: 2324235343453463,
+    //     Name: "Kabilan Mahathevan",
+    //     role: "Divisional Irrigation Engineer",
+    //     acronym: "DIE",
+    //     office: "DIE Office",
+    //     officeLocation: "Matara"
+    //   },
+    //   {
+    //     empId: 2423534634534534,
+    //     Name: "Senthooran",
+    //     role: "Draftsman",
+    //     acronym: "D'man",
+    //     office: "DIE Office",
+    //     officeLocation: "Matara"
+    //   },
+    //   {
+    //     empId: 231232131231223,
+    //     Name: "Tharsigan",
+    //     role: "Engineering Assistance",
+    //     acronym: "EA",
+    //     office: "DIE Office",
+    //     officeLocation: "Matara"
+    //   },
+    //   {
+    //     empId: 232342387961223,
+    //     Name: "Thuva",
+    //     role: "Chief Engineer",
+    //     acronym: "CE",
+    //     office: "DIE Office",
+    //     officeLocation: "Matara"
+    //   },
+    //   {
+    //     empId: 435353252345234,
+    //     Name: "Dinesh",
+    //     role: "Mechanical Engineer",
+    //     acronym: "ME",
+    //     office: "ME Office",
+    //     officeLocation: "Halpathota"
+    //   },
+    // ];
+    // setEmployee(Empdata);
+    // setIsLoading(false);
 
     // API request to get the different Sub task category.
     const subTaskData = [
@@ -106,7 +115,12 @@ export default function SubTask(props) {
 
     setSubTasks(subTaskData);
 
-    }, []);
+    return () => {
+      isMounted = false 
+      controller.abort()
+    }
+
+  }, []);
 
 
   return (
@@ -172,18 +186,18 @@ export default function SubTask(props) {
         )}
       />
       <Stack direction="column">
-        {arr.map((option)=>
+        {arr.map((option) =>
           <Controller
             key={option.id}
-            mb={{m:5}}
-            sx={{mb:2}}
+            mb={{ m: 5 }}
+            sx={{ mb: 2 }}
             name={`employee${option.id}${id}`}
             control={control}
             render={({
               field: { onChange, value },
               fieldState: { error }
-          }) => ( !isLoading && 
-                <EmployeeSearch
+            }) => (!isLoading &&
+              <EmployeeSearch
                 onChange={onChange}
                 value={value}
                 error={!!error}
