@@ -45,7 +45,7 @@ export default function Router() {
         <Route path="app" element={<DashboardApp />} />
 
         {/* Role based authorization example */}
-        <Route path='user' element={<RequireAuth allowedRoles={[ROLES_LIST.CE]} />}>
+        <Route path='user' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin]} />}>
           <Route path="/dashboard/user" element={<User />} />
         </Route>
 
