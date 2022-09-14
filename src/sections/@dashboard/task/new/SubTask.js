@@ -5,6 +5,7 @@ import { Box, Fab, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/PersonAdd';
 
 import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import EmployeeSearch from './EmployeeSearch';
 
@@ -24,6 +25,8 @@ export default function SubTask(controlObj, id) {
   const [arr, setArr] = useState([]);
 
   const axios = useAxiosPrivate();
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const createEmployeeField = () => {
     setArr(data => {
@@ -32,14 +35,23 @@ export default function SubTask(controlObj, id) {
   }
 
   useEffect(() => {
-    // create the API request to get the employee names and title.
-    async function fetchData() {
-      const response = await axios.get(ALL_EMPLOYEES_URL, {
-        withCredentials: true
-      });
-      // console.log(JSON.stringify(response?.data));
-      setEmployees2(response?.data)
-      setIsLoading(false)
+    let isMounted = true
+    const controller = new AbortController()
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(ALL_EMPLOYEES_URL, {
+          signal: controller.signal,
+          withCredentials: true
+        });
+        // console.log(JSON.stringify(response?.data));
+        if (isMounted) setEmployees2(response?.data)
+        if (isMounted) setIsLoading(false)
+      } catch (err) {
+        console.error("ERROR IN USEEFFECT : ")
+        console.log(err)
+        navigate('/login', { state: { from: location }, replace: true })
+      }
     }
     fetchData()
 
@@ -101,6 +113,11 @@ export default function SubTask(controlObj, id) {
 
     setSubTasks(subTaskData);
 
+    return () => {
+      isMounted = false 
+      controller.abort()
+    }
+
   }, []);
 
 
@@ -156,7 +173,7 @@ export default function SubTask(controlObj, id) {
             render={({
               field: { onChange, value },
               fieldState: { error }
-            }) => ( !isLoading && 
+            }) => (!isLoading &&
               <EmployeeSearch
                 onChange={onChange}
                 value={value}
