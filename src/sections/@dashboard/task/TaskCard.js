@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Link, Card, Grid, Avatar, Typography, CardContent } from '@mui/material';
+import { Box, Link, Card, Grid, Avatar, Typography, CardContent, Stack } from '@mui/material';
 // utils
-import { fDate } from '../../../utils/formatTime';
+import { fDate, fDateTime } from '../../../utils/formatTime';
 import { fShortenNumber } from '../../../utils/formatNumber';
 //
 import SvgIconStyle from '../../../components/SvgIconStyle';
@@ -43,16 +43,22 @@ TaskCard.propTypes = {
 };
 
 export default function TaskCard({ task, index }) {
-  const { cover, title, view, comment, share, author, createdAt } = task;
+  // const { cover, title, view, comment, share, author, createdAt } = task;
+  const { description, createdAt, updatedAt } = task
 
   return (
     <Grid item xs={12} sm={12} md={12}>
       <Card sx={{ position: 'relative' }}>
 
         <CardContent>
-          <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
-            {fDate(createdAt)}
-          </Typography>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
+              created at: {fDateTime(createdAt)}
+            </Typography>
+            <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
+              last updated at: {fDateTime(updatedAt)}
+            </Typography>
+          </Stack>
 
           <TitleStyle
             to="#"
@@ -61,7 +67,7 @@ export default function TaskCard({ task, index }) {
             underline="hover"
             component={RouterLink}
           >
-            {title}
+            {description}
           </TitleStyle>
         </CardContent>
       </Card>
