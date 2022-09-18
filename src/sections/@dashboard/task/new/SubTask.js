@@ -126,13 +126,14 @@ export default function SubTask(props) {
   return (
     <>
       <Controller
-        name={`taskName${id}`}
+        name={`taskName ${id}`}
         control={control}
         render={({
           field: { onChange, value },
           fieldState: { error }
         }) => (
           <TextField
+            required
             fullWidth
             variant="outlined"
             onChange={onChange}
@@ -144,7 +145,7 @@ export default function SubTask(props) {
         )}
       />
       <Controller
-        name={`taskNote${id}`}
+        name={`taskNote ${id}`}
         control={control}
         render={({
           field: { onChange, value },
@@ -165,7 +166,7 @@ export default function SubTask(props) {
         )}
       />
       <Controller
-        name={`date${id}`}
+        name={`deadline ${id}`}
         control={control}
         render={({
           field: { onChange, value },
@@ -191,7 +192,7 @@ export default function SubTask(props) {
             key={option.id}
             mb={{ m: 5 }}
             sx={{ mb: 2 }}
-            name={`employee${option.id}${id}`}
+            name={`employee ${id} ${option.id}`}
             control={control}
             render={({
               field: { onChange, value },

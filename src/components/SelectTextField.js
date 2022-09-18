@@ -19,7 +19,7 @@ export default function SelectTextField({ options, label, value, onChange}) {
         onChange={onChange}
     >
       {options.map((option, i) => (
-        <MenuItem key={i} value={option.name}>
+        <MenuItem key={i} value={option._id}>
           {option.name}
         </MenuItem>
         ))}
