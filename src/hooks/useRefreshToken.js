@@ -3,7 +3,6 @@ import Axios from "../api/axios"
 
 const useRefreshToken = () => {
     // const { setAuth } = useAuth()
-    console.log("WWWWWW")
 
     const refresh = async () => {
         const response = await Axios.get('/refresh', {

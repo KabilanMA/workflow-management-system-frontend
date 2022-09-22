@@ -12,6 +12,7 @@ import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Task from './pages/Task';
 import NewTask from './pages/NewTask';
+import Workflow from './pages/Workflow';
 
 import RequireAuth from './sections/auth/RequireAuth';
 import Page401 from './pages/Page401';
@@ -50,7 +51,8 @@ export default function Router() {
         </Route>
 
         <Route path="products" element={<Products />} />
-        <Route path="blog" element={<Blog />} />
+        {/* <Route path="blog" element={<Blog />} /> */}
+        <Route path="workflow" element={<Workflow />} />
         <Route path='task' element={<Task />}/>
         <Route path="task/new" element={<NewTask />} />
       </Route>
