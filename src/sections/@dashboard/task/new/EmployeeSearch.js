@@ -23,6 +23,7 @@ export default function EmployeeSearch({ employees, onChange}) {
   const [value, setValue] = useState(null);
   return (
     <Autocomplete
+      data-testid='empSearch'
       sx={{ mb: 2, width: 320 }}
       autoHighlight
       popupIcon={null}
@@ -40,6 +41,7 @@ export default function EmployeeSearch({ employees, onChange}) {
       isOptionEqualToValue={(option, value) => option._id === value._id}
       renderInput={(params) => (
         <TextField
+          data-testid='selection-text'
           {...params}
           placeholder="Assign Employee..."
           InputProps={{
