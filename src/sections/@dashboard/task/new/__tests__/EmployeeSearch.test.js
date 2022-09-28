@@ -52,25 +52,4 @@ test('should render EmployeeSearch component', ()=>{
     userEvent.click(autoCompleteDropdown);
 
     const t = screen.findAllByDisplayValue('Kabilan');
-    console.log(t);
-    const presen = screen.getByRole('input')
-    // console.log(presen);
-    // expect(screen.getByRole('presentation')).toBeVisible();
-
-    // userEvent.click(document.body);
-    // expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
-
-
-    // expect(queryByRole('EmployeeSearch'))
-
-    // expect(autocomplete).toBeInTheDocument();
 });
-
-// test('matches snapshot', ()=>{
-//     const tree = renderer.create(
-//         <MemoryRouter>
-//             <TaskCard key={maintask._id} task={maintask} index={0} />
-//         </MemoryRouter>
-//     ).toJSON();
-//     expect(tree).toMatchSnapshot();
-// })
