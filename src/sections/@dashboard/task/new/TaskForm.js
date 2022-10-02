@@ -20,18 +20,6 @@ const ALL_CATEGORIES_URL = "/categories"
 const MAINTASK_URL = "/mainTasks"
 const SUBTASKS_URL = "/subtasks"
 
-// const tasks = [
-//   {
-//     label: "Maintenance & Improvements to Buildings"
-//   },
-//   {
-//     label: "Maintenance of Departmental Roads in Irrigation Schemes"
-//   },
-//   {
-//     label: "RMMIS - Infrastructure Development"
-//   }
-// ];
-
 
 const defaultValues = {
   taskCategory: '',

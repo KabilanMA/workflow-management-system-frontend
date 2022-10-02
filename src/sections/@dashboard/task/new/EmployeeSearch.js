@@ -19,7 +19,7 @@ EmployeeSearch.propTypes = {
   employees: PropTypes.array.isRequired,
 };
 
-export default function EmployeeSearch({ employees, onChange}) {
+export default function EmployeeSearch({ employees, onChange }) {
   const [value, setValue] = useState(null);
   return (
     <Autocomplete
@@ -34,9 +34,8 @@ export default function EmployeeSearch({ employees, onChange}) {
       value={value}
       PopperComponent={PopperStyle}
       options={employees}
-      getOptionLabel={(employee) => {
-        return employee.firstname;
-      }}
+      getOptionLabel={(employee) => employee.firstname ? employee.firstname : ""
+      }
       
       isOptionEqualToValue={(option, value) => option._id === value._id}
       renderInput={(params) => (
