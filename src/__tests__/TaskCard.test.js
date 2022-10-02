@@ -1,6 +1,6 @@
 import { render, screen, cleanup } from '@testing-library/react';
 import renderer from 'react-test-renderer';
-import { TaskCard } from '../';
+import { TaskCard } from '../sections/@dashboard/task';
 import { MemoryRouter } from 'react-router-dom';
 
 let maintask = {
