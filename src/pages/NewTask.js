@@ -7,7 +7,7 @@ import useResponsive from '../hooks/useResponsive';
 // components
 import Page from '../components/Page';
 // sections
-import { RegisterForm } from '../sections/auth/register';
+
 import TaskForm from '../sections/@dashboard/task/new/TaskForm';
 
 // ----------------------------------------------------------------------
@@ -36,7 +36,7 @@ export default function NewTask() {
   const mdUp = useResponsive('up', 'md');
 
   return (
-    <Page title="Register">
+    <Page title="New Task">
       <RootStyle>
         <Container>
           <ContentStyle>
