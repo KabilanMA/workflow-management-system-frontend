@@ -27,7 +27,7 @@ export default function SubTask(props) {
   const [arr, setArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
-  const privateAxios = test ? null : useAxiosPrivate();
+  const privateAxios = useAxiosPrivate();
   const navigate = useNavigate()
   const location = useLocation()
 

@@ -30,7 +30,6 @@ describe("<SubTask /> Component", ()=>{
     describe('when rendered', () => {
         it('should fetch the list of employees', async () => { await act(async () => {
             const getSpy = jest.spyOn(axios, 'get');
-            const axiosPrivate = axios.create()
             axios.get.mockResolvedValue({
                 data: [
                     {
@@ -48,6 +47,8 @@ describe("<SubTask /> Component", ()=>{
 
             const Test = (props) => {
                 const { control } = useForm({});
+                // const useAxiosPrivateSpy = jest.spyOn(React, 'useAxiosPrivate');
+                // useAxiosPrivateSpy.mockImplementation(()=> null);
 
                 return(
                     <MemoryRouter>

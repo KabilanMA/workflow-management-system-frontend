@@ -10,7 +10,7 @@ const useAxiosPrivate = () => {
     const auth = JSON.parse(localStorage.getItem("user"))
 
     useEffect(() => {
-
+    try {
         const requestIntercept = axiosPrivate.interceptors.request.use(
             config => {
                 if (!config.headers.Authorization) {
@@ -40,7 +40,9 @@ const useAxiosPrivate = () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
             axiosPrivate.interceptors.response.eject(responseIntercept);
         }
-
+    }catch(err) {
+        console.log(err);
+    }
     }, [auth, refresh])
 
     return axiosPrivate;
