@@ -13,18 +13,21 @@ import EmployeeSearch from './EmployeeSearch';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 // import axios from "../../../../api/axios"
 
+const axio = require('axios')
+
 const ALL_EMPLOYEES_URL = '/users'
 
 export default function SubTask(props) {
   const control = props.control;
   const id = props.id;
 
+  const test = props?.test ?? false;
   // const [employees, setEmployee] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [arr, setArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
-  const axios = useAxiosPrivate();
+  const privateAxios = useAxiosPrivate();
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -41,7 +44,7 @@ export default function SubTask(props) {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(ALL_EMPLOYEES_URL, {
+        const response = await privateAxios.get(ALL_EMPLOYEES_URL, {
           signal: controller.signal,
           withCredentials: true
         });
@@ -53,7 +56,22 @@ export default function SubTask(props) {
         navigate('/login', { state: { from: location }, replace: true })
       }
     }
-    fetchData()
+
+    const dummyFetch = async () =>{
+      try{
+        const response = await axio.get('test')
+        if(isMounted) setEmployees(response?.data)
+        if(isMounted) setIsLoading(false)
+      }catch (err) {
+        console.error("Test Error")
+        console.log(err)
+      }
+    }
+    if(!test){
+      fetchData()
+    }else {
+      dummyFetch()
+    }
 
     return () => {
       isMounted = false 
