@@ -1,25 +1,16 @@
 import {
-    fireEvent,
-    getByRole,
-    getByText,
     render,
-    screen, 
     cleanup,
-    within,
-    waitFor
+    screen
 } from '@testing-library/react';
 import React from "react";
-import userEvent from '@testing-library/user-event';
-import renderer from 'react-test-renderer';
 import { act } from 'react-dom/test-utils';
 import SubTask from '../sections/@dashboard/task/new/SubTask';
 import { MemoryRouter } from 'react-router-dom';
-import { Controller, useForm, FormProvider } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import useAxiosPrivate from '../hooks/useAxiosPrivate'
-// import { axiosPrivate } from '../api/axios'
 
-// jest.mock('useAxiosPrivate');
+
 jest.mock('axios');
 
 afterEach(()=>{
@@ -47,8 +38,6 @@ describe("<SubTask /> Component", ()=>{
 
             const Test = (props) => {
                 const { control } = useForm({});
-                // const useAxiosPrivateSpy = jest.spyOn(React, 'useAxiosPrivate');
-                // useAxiosPrivateSpy.mockImplementation(()=> null);
 
                 return(
                     <MemoryRouter>
@@ -58,8 +47,7 @@ describe("<SubTask /> Component", ()=>{
 
             }
             
-            render(<Test test/>);
-            // expect(getSpy).toBeCalled();
+            render(<Test test />)
         });
     })});
 });
