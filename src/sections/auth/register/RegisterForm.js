@@ -53,13 +53,13 @@ export default function RegisterForm() {
   } = methods;
 
   const onSubmit = async () => {
-    const firstName = methods.getValues('firstName');
-    const lastName = methods.getValues('lastName');
+    const firstname = methods.getValues('firstName');
+    const lastname = methods.getValues('lastName');
     const email = methods.getValues('email');
     const password = methods.getValues('password');
     console.log(PWD_REGEX.test(password));
-    if (!USER_REGEX.test(firstName) || !USER_REGEX.test(lastName) || !PWD_REGEX.test(password)) {
-      errorToast("Not Registered <<REGEX FAIL>>");
+    if (!USER_REGEX.test(firstname) || !USER_REGEX.test(lastname) || !PWD_REGEX.test(password)) {
+      errorToast("Not Registered - Please provide correct inputs as per the instructions shown below each field");
     } else {
       // successToast("Registering");
       // console.log("Registering");
@@ -67,7 +67,7 @@ export default function RegisterForm() {
 
       try {
         const response = await axios.post(REGISTER_URL,
-          JSON.stringify({ email, pwd: password }),
+          JSON.stringify({ email, pwd: password, firstname, lastname}),
           {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true
@@ -83,10 +83,11 @@ export default function RegisterForm() {
         // setPwd('');
         // setMatchPwd('');
       } catch (err) {
+        console.log(err)
         if (!err?.response) {
-          errorToast('No Server Response');
+          errorToast('Sorry, No Server Response');
         } else if (err.response?.status === 409) {
-          errorToast('email Taken');
+          errorToast('Sorry, that email is already taken');
         } else {
           errorToast('Registration Failed')
         }

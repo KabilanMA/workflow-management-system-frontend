@@ -15,10 +15,12 @@ import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import SubtaskOrderTimeline from "../components/SubtaskOrderTimeline"
 
-// get the id from a prop later
-const id = "6329c1043d6d5f6842952539"
-const MAINTASK_URL = "/mainTasks/6329c1043d6d5f6842952539"
-
+// WHEN INTEGRATING : get the maintaskID from a prop
+const maintaskid = "6329c1043d6d5f6842952539"
+const MAINTASK_URL = `/mainTasks/${maintaskid}`
+const SUBTASKS_OF_MAINTASK_URL = `/subtasks/of-maintask/${maintaskid}`
+const CATEGORIES_URL = `/categories`
+const USERS_URL = '/users'
 // ----------------------------------------------------------------------
 
 export default function Workflow() {
@@ -39,17 +41,17 @@ export default function Workflow() {
     const fetchData = async () => {
       try {
 
-        const maintask = await axios.get(MAINTASK_URL, {
+        const maintaskData = await axios.get(MAINTASK_URL, {
           signal: controller.signal,
           withCredentials: true
         });
 
-        const subtasksData = await axios.get("/subtasks/of-maintask/6329c1043d6d5f6842952539", {
+        const subtasksData = await axios.get(SUBTASKS_OF_MAINTASK_URL, {
           signal: controller.signal,
           withCredentials: true
         })
 
-        const category = await axios.get(`/categories/${maintask.data.category_id}`, {
+        const categoryData = await axios.get(`${CATEGORIES_URL}/${maintaskData.data.category_id}`, {
           signal: controller.signal,
           withCredentials: true
         })
@@ -63,7 +65,8 @@ export default function Workflow() {
 
           Object.keys(subtaskData.assigned_employees).forEach(async empID => {
             const isEmployeeCompleted = subtaskData.assigned_employees[empID]
-            const employeeData = await axios.get(`/users/${empID}`, {
+
+            const employeeData = await axios.get(`${USERS_URL}/${empID}`, {
               signal: controller.signal,
               withCredentials: true
             })
@@ -79,19 +82,19 @@ export default function Workflow() {
         setSubtasks(newSubtasks)
 
         if (isMounted) {
-          setMaintask(maintask?.data)
-          setCategory(category?.data)
+          setMaintask(maintaskData?.data)
+          setCategory(categoryData?.data)
           setIsLoading(false)
         }
         
       } catch (err) {
         console.error("ERROR IN USEEFFECT : ")
         console.log(err)
-        if (err.maintask?.status === 204) { // No content
+        if (err.maintaskData?.status === 204) { // No content
           errorToast("No categories yet")
         } else {
           console.log("BBBBBBBBBBB")
-          // navigate('/login', { state: { from: location }, replace: true })
+          navigate('/login', { state: { from: location }, replace: true })
         }
       }
     }
@@ -106,7 +109,7 @@ export default function Workflow() {
   
 
   return (
-    <Page title="Dashboard">
+    <Page title="Workflow">
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
           {!isLoading && maintask.description} 
