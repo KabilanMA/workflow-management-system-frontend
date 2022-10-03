@@ -27,17 +27,16 @@ import { fDateTime } from '../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
-AppOrderTimeline.propTypes = {
+SubtaskOrderTimeline.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
   list: PropTypes.array.isRequired,
 };
 
-export default function AppOrderTimeline({ title, subheader, list, ...other }) {
-  
+export default function SubtaskOrderTimeline({ title, subheader, list, ...other }) {
   return (
     <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
+      <CardHeader title={title} subheader={subheader} data-testid="subtaskOrderTimeline-cardHeader" />
 
       <CardContent
         sx={{
@@ -69,11 +68,13 @@ OrderItem.propTypes = {
 
 function OrderItem({ item, isLast }) {
 
-  const { status, title, deadline, assignedEmployees } = item;
+  // const { status, title, deadline, assignedEmployees } = item;
+  const { status, title, deadline } = item;
 
   const hasDeadlinePassed = (deadline) => {
-    if(deadline.getTime() > (new Date()).getTime()) {
-        return false
+    console.log("TTTTTTTTTT", deadline, typeof deadline)
+    if (deadline.getTime() > (new Date()).getTime()) {
+      return false
     } return true
   }
 
@@ -86,14 +87,15 @@ function OrderItem({ item, isLast }) {
       return 'grey'
     } if (hasDeadlinePassed(deadline)) { // status=0 means subtask is not yet finished
       return 'error'
-    } 
-    return 'info' // return 'info' 
+    }
+    return 'info' // return 'info' (task not yet finished and the dealine has not yet passed)
   }
 
   return (
     <TimelineItem>
       <TimelineSeparator>
         <TimelineDot
+          data-testid="subtaskOrderTimeline-timelineDot"
           color={
             getColor(deadline)
           }
@@ -102,9 +104,13 @@ function OrderItem({ item, isLast }) {
       </TimelineSeparator>
 
       <TimelineContent>
-        <Typography variant="subtitle2">{title}</Typography>
+        <Typography
+          data-testid="subtaskOrderTimeline-title"
+          variant="subtitle2">{title}</Typography>
 
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+        <Typography
+          data-testid="subtaskOrderTimeline-deadline"
+          variant="caption" sx={{ color: 'text.secondary' }}>
           Deadline: {fDateTime(deadline)}
         </Typography>
       </TimelineContent>

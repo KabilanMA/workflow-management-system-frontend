@@ -94,7 +94,7 @@ export default function Workflow() {
           errorToast("No categories yet")
         } else {
           console.log("BBBBBBBBBBB")
-          // navigate('/login', { state: { from: location }, replace: true })
+          navigate('/login', { state: { from: location }, replace: true })
         }
       }
     }
@@ -109,7 +109,7 @@ export default function Workflow() {
   
 
   return (
-    <Page title="Dashboard">
+    <Page title="Workflow">
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
           {!isLoading && maintask.description} 
