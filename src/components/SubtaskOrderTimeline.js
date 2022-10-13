@@ -72,7 +72,6 @@ function OrderItem({ item, isLast }) {
   const { status, title, deadline } = item;
 
   const hasDeadlinePassed = (deadline) => {
-    console.log("TTTTTTTTTT", deadline, typeof deadline)
     if (deadline.getTime() > (new Date()).getTime()) {
       return false
     } return true

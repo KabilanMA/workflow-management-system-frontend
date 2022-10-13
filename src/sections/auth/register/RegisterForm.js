@@ -32,7 +32,8 @@ export default function RegisterForm() {
     firstName: Yup.string().matches(USER_REGEX, "Name should only contain between 2 to 50 English alphabet characters").required('First name required'),
     lastName: Yup.string().matches(USER_REGEX, "Name should only contain between 2 to 50 English alphabet characters").required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().matches(PWD_REGEX, "Password should be between 8 to 80 characters of alphabets, numbers and special characters (!@#$%) only").required('Password is required'),
+    // password: Yup.string().matches(PWD_REGEX, "Password should be between 8 to 80 characters of alphabets, numbers and special characters (!@#$%) only").required('Password is required'),
+    password: Yup.string().matches(PWD_REGEX, "Password should contain at least 8 characters, (maximum is 80) a lowercase & uppercase letter, a number and a special character (!@#$%)").required('Password is required'),
   });
 
   const defaultValues = {

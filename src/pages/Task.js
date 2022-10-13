@@ -56,17 +56,6 @@ export default function TaskPage() {
     <Page title="Tasks">
       <Container>
 
-        {/* <Stack mb={5} direction='row' alignItems="center" justifyContent="space-between"
-          >
-            <TaskForm 
-              sx={{
-                mt:20
-              }}
-              open={newTaskVisible}
-              onClose={setNewTask}
-            />
-        </Stack> */}
-
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Tasks
@@ -83,10 +72,6 @@ export default function TaskPage() {
             New Task
           </Button>
         </Stack>
-
-        {/* <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-            <TaskSearch tasks={POSTS} />
-          </Stack> */}
 
         <Grid container spacing={3}>
           {!isLoading && mainTasks.map((maintask, index) => (
