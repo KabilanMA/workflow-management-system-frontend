@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 // material
 import {
   Card,
@@ -25,14 +25,17 @@ import Scrollbar from '../components/Scrollbar';
 import Iconify from '../components/Iconify';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { errorToast } from '../components/Toasts';
 // mock
-import USERLIST from '../_mock/user';
+// import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
+const GET_USERS_URL = '/users'
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
   { id: 'isVerified', label: 'Verified', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
@@ -71,18 +74,57 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function User() {
+
+  const axios = useAxiosPrivate()
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [USERLIST, setUSERLIST] = useState([])
+  const [isLoading, setIsLoading]= useState(true)
 
+  useEffect(() => {
+    let isMounted = true
+    const controller = new AbortController()
+
+    const fetchUsers = async () => {
+      try {
+        const usersData = await axios.get(GET_USERS_URL, {
+          signal: controller.signal,
+          withCredentials: true
+        });
+
+        console.log(usersData.data)   
+
+        if (isMounted) {
+          setUSERLIST(usersData.data)
+          setIsLoading(false)
+        }
+
+      } catch (err) {
+        console.error("ERROR IN USEEFFECT : ")
+        console.log(err)
+        if (err.usersData?.status === 204) { // No content
+          errorToast("No User data currently avaiable")
+        } else {
+          console.log("BBBBBBBBBBB")
+          navigate('/login', { state: { from: location }, replace: true })
+        }
+      }
+    }
+
+    fetchUsers()
+
+    return () => {
+      isMounted = false
+      controller.abort()
+    }
+  }, [])
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -98,11 +140,11 @@ export default function User() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, _id) => {
+    const selectedIndex = selected.indexOf(_id);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, _id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -128,16 +170,20 @@ export default function User() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  let filteredUsers = []
+  if (!isLoading) {
+    console.log("FFFFFFFFFF")
+    filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  }
 
   const isUserNotFound = filteredUsers.length === 0;
 
-  return (
+  return ( !isLoading &&
     <Page title="User">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Users
           </Typography>
           <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
             New User
@@ -151,8 +197,11 @@ export default function User() {
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead
+                  // asc or desc 
                   order={order}
+                  // orderby name or role or etc.
                   orderBy={orderBy}
+                  // all the tanle header names
                   headLabel={TABLE_HEAD}
                   rowCount={USERLIST.length}
                   numSelected={selected.length}
@@ -160,36 +209,53 @@ export default function User() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
+                  {!isLoading && filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    
+                    let { _id, firstname, lastname, email, roles, userStatus } = row;
+                    let userStatusString = "active"  
+                    let rolesString = ""               
+                    if (userStatus === 0) userStatusString = "deleted"
+                    console.log(typeof roles, roles)
+                    if (!_id) _id = ""
+                    if (!firstname) firstname = ""
+                    if (!lastname) lastname = ""
+                    if (!email) email = ""
+                    if (typeof userStatus === "undefined") userStatus = "NA"
+                    if (!roles) roles = []
+                    else {
+                      Object.keys(roles).forEach((role, roleNumber) => {
+                        rolesString = `${rolesString}, ${role}`
+                      })
+                      rolesString = rolesString.slice(1)
+                    }
+                    const isItemSelected = selected.indexOf(_id) !== -1;
 
                     return (
                       <TableRow
                         hover
-                        key={id}
+                        key={_id}
                         tabIndex={-1}
                         role="checkbox"
                         selected={isItemSelected}
                         aria-checked={isItemSelected}
                       >
                         <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, _id)} />
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            {/* <Avatar alt={name} src={avatarUrl} /> */}
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {`${firstname} ${lastname}`}
                             </Typography>
                           </Stack>
                         </TableCell>
-                        <TableCell align="left">{company}</TableCell>
-                        <TableCell align="left">{role}</TableCell>
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{email}</TableCell>
+                        <TableCell align="left">{rolesString}</TableCell>
+                        <TableCell align="left">{userStatus === 1 ? 'Yes' : 'No'}</TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
-                            {sentenceCase(status)}
+                          <Label variant="ghost" color={(userStatus === 0 && 'error') || 'success'}>
+                            {sentenceCase(userStatusString)}
                           </Label>
                         </TableCell>
 
