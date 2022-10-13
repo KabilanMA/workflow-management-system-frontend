@@ -34,17 +34,37 @@ import { errorToast } from '../components/Toasts';
 const GET_USERS_URL = '/users'
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'fullname', label: 'Name', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'roles', label: 'Roles', alignRight: false },
+  { id: 'userStatus', label: 'Status', alignRight: false },
   { id: '' },
 ];
 
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
+  if (orderBy === 'status') {
+    a = a.toString()
+    b = b.toString()
+  }
+  if (orderBy === 'roles') {
+    let aRolesString = ''
+    let bRolesString = ''
+    
+    if(a.roles === undefined || b.roles === undefined) return
+
+    Object.keys(a.roles).forEach(role => {
+      aRolesString = `${aRolesString}, ${role}`
+    })
+    aRolesString = aRolesString.slice(1).toLowerCase()
+
+    Object.keys(b.roles).forEach(role => {
+      bRolesString = `${bRolesString}, ${role}`
+    })
+    bRolesString = bRolesString.slice(1).toLowerCase()
+    return aRolesString.localeCompare(bRolesString)
+  }
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -68,7 +88,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.firstname.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -97,12 +117,19 @@ export default function User() {
         const usersData = await axios.get(GET_USERS_URL, {
           signal: controller.signal,
           withCredentials: true
-        });
-
-        console.log(usersData.data)   
-
+        }); 
+        
         if (isMounted) {
-          setUSERLIST(usersData.data)
+          const tempUserList = usersData.data.map(userObject => {
+            const fn = userObject.firstname
+            let ln = userObject.lastname
+            if (ln === undefined) ln = ""
+
+            const fullname = `${fn} ${ln}`
+            const newUserObject = {...userObject, fullname}
+            return newUserObject
+          })
+          setUSERLIST(tempUserList)
           setIsLoading(false)
         }
 
@@ -133,7 +160,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = USERLIST.map((n) => n._id);
       setSelected(newSelecteds);
       return;
     }
@@ -172,18 +199,17 @@ export default function User() {
 
   let filteredUsers = []
   if (!isLoading) {
-    console.log("FFFFFFFFFF")
     filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
   }
 
   const isUserNotFound = filteredUsers.length === 0;
 
   return ( !isLoading &&
-    <Page title="User">
+    <Page title="All-Users">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Users
+            All-Users
           </Typography>
           <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
             New User
@@ -201,7 +227,7 @@ export default function User() {
                   order={order}
                   // orderby name or role or etc.
                   orderBy={orderBy}
-                  // all the tanle header names
+                  // all the table header names
                   headLabel={TABLE_HEAD}
                   rowCount={USERLIST.length}
                   numSelected={selected.length}
@@ -215,7 +241,6 @@ export default function User() {
                     let userStatusString = "active"  
                     let rolesString = ""               
                     if (userStatus === 0) userStatusString = "deleted"
-                    console.log(typeof roles, roles)
                     if (!_id) _id = ""
                     if (!firstname) firstname = ""
                     if (!lastname) lastname = ""
@@ -252,7 +277,6 @@ export default function User() {
                         </TableCell>
                         <TableCell align="left">{email}</TableCell>
                         <TableCell align="left">{rolesString}</TableCell>
-                        <TableCell align="left">{userStatus === 1 ? 'Yes' : 'No'}</TableCell>
                         <TableCell align="left">
                           <Label variant="ghost" color={(userStatus === 0 && 'error') || 'success'}>
                             {sentenceCase(userStatusString)}
