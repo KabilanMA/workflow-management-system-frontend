@@ -17,6 +17,10 @@ import {
   Typography,
   TableContainer,
   TablePagination,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -32,13 +36,14 @@ import { errorToast } from '../components/Toasts';
 
 // ----------------------------------------------------------------------
 const GET_USERS_URL = '/users'
+const CHANGE_USER_STATUS_URL = '/users/changeStatus'
 
 const TABLE_HEAD = [
   { id: 'fullname', label: 'Name', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
   { id: 'roles', label: 'Roles', alignRight: false },
   { id: 'userStatus', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'changeUserStatus', label: 'Change status',  alignRight: false},
 ];
 
 // ----------------------------------------------------------------------
@@ -107,6 +112,7 @@ export default function User() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [USERLIST, setUSERLIST] = useState([])
   const [isLoading, setIsLoading]= useState(true)
+  // const [changedUserStatus]
 
   useEffect(() => {
     let isMounted = true
@@ -195,6 +201,94 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
+  const getUserStatusColor = (userStatus) => {
+    if (userStatus === 0) return "warning"
+    if (userStatus === 1) return "success"
+    return 'error'
+  }
+
+  const getSelectMenuItems = (currentUserStatus, userId) => {
+    if (currentUserStatus === 0) // currently pending for approval 
+      return (
+          <Select
+            labelId="change-user-status-select-label"
+            id="demo-user-status-select"
+            value={currentUserStatus}
+            label="User status"
+            onChange={(e) => handleSelectUserStatusChange(e, userId)}
+          >
+          <MenuItem value={0}>
+            <Label variant="ghost"> </Label>
+          </MenuItem>
+          <MenuItem value={-1}>
+            <Label variant="ghost" color={"error"}>
+              Delete
+            </Label>
+          </MenuItem>
+          <MenuItem value={1}>
+            <Label variant="ghost" color={"success"}>
+              Approve
+            </Label>
+          </MenuItem>
+          </Select>
+      )
+    if (currentUserStatus === 1) // currently a Active User
+      return (
+          <Select
+            labelId="change-user-status-select-label"
+            id="demo-user-status-select"
+            value={currentUserStatus}
+            label="User status"
+            onChange={(e) => handleSelectUserStatusChange(e, userId)}
+          >
+          <MenuItem value={1}>
+            <Label variant="ghost" > </Label>
+          </MenuItem>
+          <MenuItem value={-1}>
+            <Label variant="ghost" color={"error"}>
+              Delete
+            </Label>
+          </MenuItem>
+          <MenuItem value={0}>
+            <Label variant="ghost" color={"warning"}>
+              Unapprove
+            </Label>
+          </MenuItem>
+          </Select>
+      )
+    if (currentUserStatus === -1) // currently a deleted user 
+      return (
+        <Select
+          labelId="change-user-status-select-label"
+          id="demo-user-status-select"
+          value={currentUserStatus}
+          label="User status"
+          onChange={(e) => handleSelectUserStatusChange(e, userId)}
+        >
+          <MenuItem value={-1}>
+            <Label variant="ghost" > </Label>
+          </MenuItem>
+          <MenuItem value={1}>
+            <Label variant="ghost" color={"success"}>
+              Make active
+            </Label>
+          </MenuItem>
+        </Select>
+      )
+  }
+
+  const  handleSelectUserStatusChange = async (e, userId) => {
+    const newUserStatus = e.target.value.toString()
+    const usersData = await axios.put(`${CHANGE_USER_STATUS_URL}/${userId}`, 
+      {
+        newUserStatus
+      },
+      {
+        withCredentials: true
+      });
+    window.location.reload(false);
+  }
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   let filteredUsers = []
@@ -236,11 +330,11 @@ export default function User() {
                 />
                 <TableBody>
                   {!isLoading && filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    
                     let { _id, firstname, lastname, email, roles, userStatus } = row;
                     let userStatusString = "active"  
                     let rolesString = ""               
-                    if (userStatus === 0) userStatusString = "deleted"
+                    if (userStatus === -1) userStatusString = "deleted"
+                    if (userStatus === 0) userStatusString = "pending"
                     if (!_id) _id = ""
                     if (!firstname) firstname = ""
                     if (!lastname) lastname = ""
@@ -265,7 +359,7 @@ export default function User() {
                         aria-checked={isItemSelected}
                       >
                         <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, _id)} />
+                          {/* <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, _id)} /> */}
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
@@ -278,14 +372,30 @@ export default function User() {
                         <TableCell align="left">{email}</TableCell>
                         <TableCell align="left">{rolesString}</TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color={(userStatus === 0 && 'error') || 'success'}>
+                          {/* <Label variant="ghost" color={(userStatus === 0 && 'error') || 'success'}> */}
+                          <Label variant="ghost" color={getUserStatusColor(userStatus)}>
                             {sentenceCase(userStatusString)}
                           </Label>
                         </TableCell>
 
-                        <TableCell align="right">
+                        <TableCell align="left">
+                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                            <InputLabel id="demo-simple-select-label">Change to:</InputLabel>
+                            {/* <Select
+                              labelId="change-user-status-select-label"
+                              id="demo-user-status-select"
+                              value={userStatus}
+                              label="User status"
+                              onChange={(e) => console.log("############")}
+                            > */}
+                              {getSelectMenuItems(userStatus, _id)}
+                            {/* </Select> */}
+                          </FormControl>
+                        </TableCell>                         
+
+                        {/* <TableCell align="right">
                           <UserMoreMenu />
-                        </TableCell>
+                        </TableCell> */}
                       </TableRow>
                     );
                   })}
