@@ -112,6 +112,7 @@ export default function User() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [USERLIST, setUSERLIST] = useState([])
   const [isLoading, setIsLoading]= useState(true)
+  const [refreshKey, setRefreshKey] = useState(0);
   // const [changedUserStatus]
 
   useEffect(() => {
@@ -157,7 +158,7 @@ export default function User() {
       isMounted = false
       controller.abort()
     }
-  }, [])
+  }, [refreshKey, UserMoreMenu])
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -286,7 +287,14 @@ export default function User() {
       {
         withCredentials: true
       });
-    window.location.reload(false);
+    setRefreshKey(oldKey => oldKey +1)
+    // window.location.reload(false);
+  }
+
+  const setRefreshKey2 = () => {
+    console.log(refreshKey)
+    setRefreshKey(oldKey => oldKey + 1)
+    console.log(refreshKey)
   }
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
@@ -305,9 +313,9 @@ export default function User() {
           <Typography variant="h4" gutterBottom>
             All-Users
           </Typography>
-          <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
+          {/* <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
             New User
-          </Button>
+          </Button> */}
         </Stack>
 
         <Card>
@@ -372,7 +380,6 @@ export default function User() {
                         <TableCell align="left">{email}</TableCell>
                         <TableCell align="left">{rolesString}</TableCell>
                         <TableCell align="left">
-                          {/* <Label variant="ghost" color={(userStatus === 0 && 'error') || 'success'}> */}
                           <Label variant="ghost" color={getUserStatusColor(userStatus)}>
                             {sentenceCase(userStatusString)}
                           </Label>
@@ -381,21 +388,13 @@ export default function User() {
                         <TableCell align="left">
                         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                             <InputLabel id="demo-simple-select-label">Change to:</InputLabel>
-                            {/* <Select
-                              labelId="change-user-status-select-label"
-                              id="demo-user-status-select"
-                              value={userStatus}
-                              label="User status"
-                              onChange={(e) => console.log("############")}
-                            > */}
                               {getSelectMenuItems(userStatus, _id)}
-                            {/* </Select> */}
                           </FormControl>
                         </TableCell>                         
 
-                        {/* <TableCell align="right">
-                          <UserMoreMenu />
-                        </TableCell> */}
+                        <TableCell align="right">
+                          <UserMoreMenu userId={_id} setRefreshKeyFunc={setRefreshKey2}/>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
