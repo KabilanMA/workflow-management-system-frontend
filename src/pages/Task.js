@@ -6,7 +6,7 @@ import { Grid, Button, Container, Stack, Typography } from '@mui/material';
 
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
-import useAxiosPrivate from '../hooks/useAxiosPrivate'
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 import { TaskCard } from '../sections/@dashboard/task';
 // mock
@@ -14,47 +14,56 @@ import { TaskCard } from '../sections/@dashboard/task';
 
 // ----------------------------------------------------------------------
 
-const ALL_MAINTASKS_URL = "/mainTasks"
+const ALL_MAINTASKS_URL = '/mainTasks';
 
 export default function TaskPage() {
-
-  const [mainTasks, setMainTasks] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [mainTasks, setMainTasks] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const axios = useAxiosPrivate();
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    let isMounted = true
-    const controller = new AbortController()
+    let isMounted = true;
+    const controller = new AbortController();
 
     const fetchData = async () => {
       try {
         const response = await axios.get(ALL_MAINTASKS_URL, {
           signal: controller.signal,
-          withCredentials: true
+          withCredentials: true,
         });
-        if (isMounted) setMainTasks(response?.data)
-        if (isMounted) setIsLoading(false)
+        if (isMounted) setMainTasks(response?.data);
+        if (isMounted) setIsLoading(false);
       } catch (err) {
-        console.error("ERROR IN USEEFFECT : ")
-        console.log(err)
-        navigate('/login', { state: { from: location }, replace: true })
+        console.error('ERROR IN USEEFFECT : ');
+        console.log(err);
+        navigate('/login', { state: { from: location }, replace: true });
       }
-    }
+    };
 
-    fetchData()
+    fetchData();
 
     return () => {
-      isMounted = false 
-      controller.abort()
-    }
-  }, [])
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
 
   const [newTaskVisible, setNewTask] = useState(false);
   return (
     <Page title="Tasks">
       <Container>
+        {/* <Stack mb={5} direction='row' alignItems="center" justifyContent="space-between"
+          >
+            <TaskForm 
+              sx={{
+                mt:20
+              }}
+              open={newTaskVisible}
+              onClose={setNewTask}
+            />
+        </Stack> */}
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -65,18 +74,18 @@ export default function TaskPage() {
             component={RouterLink}
             onClick={() => {
               setNewTask(true);
-              console.log(newTaskVisible)
+              console.log(newTaskVisible);
             }}
             to="new"
-            startIcon={<Iconify icon="eva:plus-fill" />}>
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             New Task
           </Button>
         </Stack>
 
         <Grid container spacing={3}>
-          {!isLoading && mainTasks.map((maintask, index) => (
-            <TaskCard key={maintask._id} task={maintask} index={index} />
-          ))}
+          {!isLoading &&
+            mainTasks.map((maintask, index) => <TaskCard key={maintask._id} task={maintask} index={index} />)}
         </Grid>
       </Container>
     </Page>
