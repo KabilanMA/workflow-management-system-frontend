@@ -32,7 +32,8 @@ export default function RegisterForm() {
     firstName: Yup.string().matches(USER_REGEX, "Name should only contain between 2 to 50 English alphabet characters").required('First name required'),
     lastName: Yup.string().matches(USER_REGEX, "Name should only contain between 2 to 50 English alphabet characters").required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().matches(PWD_REGEX, "Password should be between 8 to 80 characters of alphabets, numbers and special characters (!@#$%) only").required('Password is required'),
+    // password: Yup.string().matches(PWD_REGEX, "Password should be between 8 to 80 characters of alphabets, numbers and special characters (!@#$%) only").required('Password is required'),
+    password: Yup.string().matches(PWD_REGEX, "Password should contain at least 8 characters, (maximum is 80) a lowercase & uppercase letter, a number and a special character (!@#$%)").required('Password is required'),
   });
 
   const defaultValues = {
@@ -53,13 +54,13 @@ export default function RegisterForm() {
   } = methods;
 
   const onSubmit = async () => {
-    const firstName = methods.getValues('firstName');
-    const lastName = methods.getValues('lastName');
+    const firstname = methods.getValues('firstName');
+    const lastname = methods.getValues('lastName');
     const email = methods.getValues('email');
     const password = methods.getValues('password');
     console.log(PWD_REGEX.test(password));
-    if (!USER_REGEX.test(firstName) || !USER_REGEX.test(lastName) || !PWD_REGEX.test(password)) {
-      errorToast("Not Registered <<REGEX FAIL>>");
+    if (!USER_REGEX.test(firstname) || !USER_REGEX.test(lastname) || !PWD_REGEX.test(password)) {
+      errorToast("Not Registered - Please provide correct inputs as per the instructions shown below each field");
     } else {
       // successToast("Registering");
       // console.log("Registering");
@@ -67,7 +68,7 @@ export default function RegisterForm() {
 
       try {
         const response = await axios.post(REGISTER_URL,
-          JSON.stringify({ email, pwd: password }),
+          JSON.stringify({ email, pwd: password, firstname, lastname}),
           {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true
@@ -83,10 +84,11 @@ export default function RegisterForm() {
         // setPwd('');
         // setMatchPwd('');
       } catch (err) {
+        console.log(err)
         if (!err?.response) {
-          errorToast('No Server Response');
+          errorToast('Sorry, No Server Response');
         } else if (err.response?.status === 409) {
-          errorToast('email Taken');
+          errorToast('Sorry, that email is already taken');
         } else {
           errorToast('Registration Failed')
         }

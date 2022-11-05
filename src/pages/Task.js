@@ -83,10 +83,6 @@ export default function TaskPage() {
           </Button>
         </Stack>
 
-        {/* <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-            <TaskSearch tasks={POSTS} />
-          </Stack> */}
-
         <Grid container spacing={3}>
           {!isLoading &&
             mainTasks.map((maintask, index) => <TaskCard key={maintask._id} task={maintask} index={index} />)}

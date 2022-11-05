@@ -1,5 +1,5 @@
-import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { Paper, Typography, TextField, MenuItem, Divider } from '@material-ui/core';
+import { Controller } from 'react-hook-form';
+import { TextField, Divider } from '@material-ui/core';
 
 import { Box, Fab, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/PersonAdd';
@@ -8,24 +8,26 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import EmployeeSearch from './EmployeeSearch';
-import DatePicker from '../../../../components/DatePicker';
+
 
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 // import axios from "../../../../api/axios"
+
+const axio = require('axios')
 
 const ALL_EMPLOYEES_URL = '/users'
 
 export default function SubTask(props) {
   const control = props.control;
   const id = props.id;
-  // console.log("d")
+
+  const test = props?.test ?? false;
   // const [employees, setEmployee] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [subTasks, setSubTasks] = useState([]);
   const [arr, setArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
-  const axios = useAxiosPrivate();
+  const privateAxios = useAxiosPrivate();
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -42,7 +44,7 @@ export default function SubTask(props) {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(ALL_EMPLOYEES_URL, {
+        const response = await privateAxios.get(ALL_EMPLOYEES_URL, {
           signal: controller.signal,
           withCredentials: true
         });
@@ -54,66 +56,22 @@ export default function SubTask(props) {
         navigate('/login', { state: { from: location }, replace: true })
       }
     }
-    fetchData()
 
-    // const Empdata = [
-    //   {
-    //     empId: 2324235343453463,
-    //     Name: "Kabilan Mahathevan",
-    //     role: "Divisional Irrigation Engineer",
-    //     acronym: "DIE",
-    //     office: "DIE Office",
-    //     officeLocation: "Matara"
-    //   },
-    //   {
-    //     empId: 2423534634534534,
-    //     Name: "Senthooran",
-    //     role: "Draftsman",
-    //     acronym: "D'man",
-    //     office: "DIE Office",
-    //     officeLocation: "Matara"
-    //   },
-    //   {
-    //     empId: 231232131231223,
-    //     Name: "Tharsigan",
-    //     role: "Engineering Assistance",
-    //     acronym: "EA",
-    //     office: "DIE Office",
-    //     officeLocation: "Matara"
-    //   },
-    //   {
-    //     empId: 232342387961223,
-    //     Name: "Thuva",
-    //     role: "Chief Engineer",
-    //     acronym: "CE",
-    //     office: "DIE Office",
-    //     officeLocation: "Matara"
-    //   },
-    //   {
-    //     empId: 435353252345234,
-    //     Name: "Dinesh",
-    //     role: "Mechanical Engineer",
-    //     acronym: "ME",
-    //     office: "ME Office",
-    //     officeLocation: "Halpathota"
-    //   },
-    // ];
-    // setEmployee(Empdata);
-    // setIsLoading(false);
-
-    // API request to get the different Sub task category.
-    const subTaskData = [
-      {
-        id: "1",
-        title: "Estimate Calculation",
-      },
-      {
-        id: "2",
-        title: "Design",
-      },
-    ];
-
-    setSubTasks(subTaskData);
+    const dummyFetch = async () =>{
+      try{
+        const response = await axio.get('test')
+        if(isMounted) setEmployees(response?.data)
+        if(isMounted) setIsLoading(false)
+      }catch (err) {
+        console.error("Test Error")
+        console.log(err)
+      }
+    }
+    if(!test){
+      fetchData()
+    }else {
+      dummyFetch()
+    }
 
     return () => {
       isMounted = false 

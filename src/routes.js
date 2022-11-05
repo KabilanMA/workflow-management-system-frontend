@@ -45,49 +45,31 @@ export default function Router() {
         <Route path="app" element={<DashboardApp />} />
 
         {/* Role based authorization example */}
-        <Route path="user" element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin]} />}>
+        <Route path='user' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin]} />}>
           <Route path="/dashboard/user" element={<User />} />
         </Route>
 
         <Route path="products" element={<Products />} />
         {/* <Route path="blog" element={<Blog />} /> */}
-        <Route path="workflow" element={<Workflow />} />
-        <Route path="subtask/:id" element={<SubtaskDes/>} />
-        <Route path="task" element={<Task />} />
-        <Route path="task/new" element={<NewTask />} />
-      </Route>
 
-      <Route path="/unauth" element={<Page401 />} />
-      <Route path="*" element={<Navigate to="/404" />} />
+        <Route path='workflow' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME]} />}>
+          <Route path="/dashboard/workflow" element={<Workflow />} />
+        <Route path="subtask/:id" element={<SubtaskDes/>} />
+        </Route>
+
+        <Route path="task" element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME]} />}>
+          <Route path="/dashboard/task" element={<Task />}  />
+        </Route>
+
+        <Route path='task/new' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin]} />}>
+          <Route path="/dashboard/task/new" element={<NewTask />} />
+        </Route>
+
+      </Route>
+      
+
+      <Route path='/unauth' element={<Page401 />} />
+      <Route path='*' element={<Navigate to="/404" />}/>
     </Routes>
   );
-  // return useRoutes([
-  //   {
-  //     path: '/dashboard',
-  //     element: <DashboardLayout />,
-  //     children: [
-  //       { path: 'app', element: <DashboardApp /> },
-  //       {
-  //         path: 'user',
-  //         element: <RequireAuth allowedRoles={[ROLES_LIST.user]} />,
-  //         // children: <User />
-  //         children: {path: '/', element: <User />}
-  //       },
-  //       { path: 'products', element: <Products /> },
-  //       { path: 'blog', element: <Blog /> },
-  //     ],
-  //   },
-  //   {
-  //     path: '/',
-  //     element: <LogoOnlyLayout />,
-  //     children: [
-  //       { path: '/', element: <Navigate to="/dashboard/app" /> },
-  //       { path: 'login', element: <Login /> },
-  //       { path: 'register', element: <Register /> },
-  //       { path: '404', element: <NotFound /> },
-  //       { path: '*', element: <Navigate to="/404" /> },
-  //     ],
-  //   },
-  //   { path: '*', element: <Navigate to="/404" replace /> },
-  // ]);
 }
