@@ -55,7 +55,7 @@ const navConfig = [{
     },
     {
         title: 'SubTask',
-        path: '/dashboard/subtask',
+        path: '/dashboard/subtask/6331ac366dab4342dee411c7',
         icon: getIcon('eva:alert-triangle-fill'),
     },
 ];

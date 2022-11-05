@@ -52,7 +52,7 @@ export default function Router() {
         <Route path="products" element={<Products />} />
         {/* <Route path="blog" element={<Blog />} /> */}
         <Route path="workflow" element={<Workflow />} />
-        <Route path="subtask" element={<SubtaskDes/>} />
+        <Route path="subtask/:id" element={<SubtaskDes/>} />
         <Route path="task" element={<Task />} />
         <Route path="task/new" element={<NewTask />} />
       </Route>
