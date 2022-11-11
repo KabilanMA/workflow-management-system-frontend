@@ -3,16 +3,11 @@ import { useEffect, useState } from 'react';
 // material
 import { Grid, Button, Container, Stack, Typography } from '@mui/material';
 // components
-
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 
 import { TaskCard } from '../sections/@dashboard/task';
-// mock
-// import POSTS from '../_mock/blog';
-
-// ----------------------------------------------------------------------
 
 const ALL_MAINTASKS_URL = "/mainTasks"
 

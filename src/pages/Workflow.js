@@ -1,31 +1,26 @@
-import { faker } from '@faker-js/faker';
 import { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 
 // @mui
-import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 
-import axios from 'axios'
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { errorToast } from '../components/Toasts';
 
 // components
 import Page from '../components/Page';
-import Iconify from '../components/Iconify';
 import SubtaskOrderTimeline from "../components/SubtaskOrderTimeline"
 
-// WHEN INTEGRATING : get the maintaskID from a prop
-const maintaskid = "6329c1043d6d5f6842952539"
-const MAINTASK_URL = `/mainTasks/${maintaskid}`
-const SUBTASKS_OF_MAINTASK_URL = `/subtasks/of-maintask/${maintaskid}`
-const CATEGORIES_URL = `/categories`
-const USERS_URL = '/users'
-// ----------------------------------------------------------------------
-
 export default function Workflow() {
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const maintaskid = searchParams.get("id")
+  const MAINTASK_URL = `/mainTasks/${maintaskid}`
+  const SUBTASKS_OF_MAINTASK_URL = `/subtasks/of-maintask/${maintaskid}`
+  const CATEGORIES_URL = `/categories`
+  const USERS_URL = '/users'
+
   const axios = useAxiosPrivate()
-  const theme = useTheme();
   const navigate = useNavigate()
   const location = useLocation()
 
