@@ -11,7 +11,6 @@ import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Task from './pages/Task';
 import NewTask from './pages/NewTask';
-import Workflow from './pages/Workflow';
 import SubtaskDes from './pages/SubtaskDes';
 import RequireAuth from './sections/auth/RequireAuth';
 import Page401 from './pages/Page401';
@@ -50,11 +49,6 @@ export default function Router() {
 
         <Route path="products" element={<Products />} />
         {/* <Route path="blog" element={<Blog />} /> */}
-
-        <Route path='workflow' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME]} />}>
-          <Route path="/dashboard/workflow" element={<Workflow />} />
-        <Route path="subtask/:id" element={<SubtaskDes/>} />
-        </Route>
 
         <Route path="task" element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME]} />}>
           <Route path="/dashboard/task" element={<Task />}  />
