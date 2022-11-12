@@ -25,11 +25,11 @@ test('should render TaskCard component', ()=>{
     expect(taskCardElement).toBeInTheDocument();
 });
 
-test('matches snapshot', ()=>{
-    const tree = renderer.create(
-        <MemoryRouter>
-            <TaskCard key={maintask._id} task={maintask} index={0} />
-        </MemoryRouter>
-    ).toJSON();
-    expect(tree).toMatchSnapshot();
-})
+// test('matches snapshot', ()=>{
+//     const tree = renderer.create(
+//         <MemoryRouter>
+//             <TaskCard key={maintask._id} task={maintask} index={0} />
+//         </MemoryRouter>
+//     ).toJSON();
+//     expect(tree).toMatchSnapshot();
+// })

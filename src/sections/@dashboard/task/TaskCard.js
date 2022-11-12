@@ -44,8 +44,8 @@ TaskCard.propTypes = {
 
 export default function TaskCard({ task, index }) {
   // const { cover, title, view, comment, share, author, createdAt } = task;
-  const { description, createdAt, updatedAt } = task
-
+  const { description, createdAt, updatedAt, _id } = task
+  const toString = `/dashboard/workflow?id=${_id}`
   return (
     <Grid item xs={12} sm={12} md={12}>
       <Card data-testid='taskcard-1' sx={{ position: 'relative' }}>
@@ -61,7 +61,7 @@ export default function TaskCard({ task, index }) {
           </Stack>
 
           <TitleStyle
-            to="#"
+            to={toString}
             color="inherit"
             variant="subtitle2"
             underline="hover"
