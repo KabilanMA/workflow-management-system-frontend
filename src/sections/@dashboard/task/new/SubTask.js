@@ -157,6 +157,7 @@ export default function SubTask(props) {
               fieldState: { error }
             }) => (!isLoading &&
               <EmployeeSearch
+                data-testid='employeeList'
                 onChange={onChange}
                 value={value}
                 error={!!error}
@@ -178,7 +179,7 @@ export default function SubTask(props) {
           bottom: '0'
         }}
       >
-        <Fab size='small' color="success" aria-label="add" onClick={() => createEmployeeField()}>
+        <Fab size='small' data-testid='add' color="success" aria-label="add" onClick={() => createEmployeeField()}>
           <AddIcon />
         </Fab>
       </Box>

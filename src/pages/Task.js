@@ -42,6 +42,7 @@ export default function TaskPage() {
         console.error('ERROR IN USEEFFECT : ');
         console.log(err);
         navigate('/login', { state: { from: location }, replace: true });
+
       }
     };
 

@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton } from '@mui/material';
 // components
 import MenuPopover from '../../components/MenuPopover';
+import useLogout from '../../hooks/useLogOut';
 // mocks_
 import account from '../../_mock/account';
 
@@ -12,27 +13,21 @@ import account from '../../_mock/account';
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
-    icon: 'eva:home-fill',
-    linkTo: '/',
-  },
-  {
     label: 'Profile',
     icon: 'eva:person-fill',
-    linkTo: '#',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-    linkTo: '#',
-  },
+    linkTo: '/dashboard/profile',
+  }
 ];
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+export default function AccountPopover(props) {
   const anchorRef = useRef(null);
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const logout = useLogout();
+  const email = props?.email;
+  const username = props?.username;
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -42,6 +37,13 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  const signOut = async () => {
+    await logout();
+    handleClose();
+    localStorage.removeItem('user');
+    navigate('/login', { state: { from: location }, replace: true })
+  }
 
   return (
     <>
@@ -82,10 +84,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {username}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {email}
           </Typography>
         </Box>
 
@@ -101,7 +103,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={signOut} sx={{ m: 1 }}>
           Logout
         </MenuItem>
       </MenuPopover>

@@ -127,7 +127,7 @@ export default function NotificationsPopover() {
         setReadNotification(notificationResult.filter((notification) =>false))
       } catch (err) {
         console.error("ERROR IN USEEFFECT : ")
-        console.log(err)
+        // console.log(err)
         if (err.response.status === 204) { // No content
         } else {
           // navigate('/login', { state: { from: location }, replace: true })
@@ -145,7 +145,7 @@ export default function NotificationsPopover() {
     <>
       <IconButton
         ref={anchorRef}
-        color={open ? 'primary' : 'default'}
+        color={open ? 'secondary' : 'primary'}
         onClick={handleOpen}
         sx={{ width: 40, height: 40 }}
       >

@@ -78,7 +78,7 @@ export default function RegisterForm() {
         console.log(response?.accessToken);
         console.log(JSON.stringify(response))
         // setSuccess(true);
-        successToast("Registering");
+        successToast("Register Completed. Check your mail.");
 
         // setEmail('');
         // setPwd('');
