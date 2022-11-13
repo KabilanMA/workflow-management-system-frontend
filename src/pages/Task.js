@@ -38,7 +38,7 @@ export default function TaskPage() {
         if (isMounted) setIsLoading(false)
       } catch (err) {
         console.error("ERROR IN USEEFFECT : ")
-        console.log(err)
+        // console.log(err)
         navigate('/login', { state: { from: location }, replace: true })
       }
     }

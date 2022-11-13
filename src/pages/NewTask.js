@@ -51,7 +51,7 @@ export default function NewTask() {
             
 
             <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to irrigation department&nbsp;
+              By submitting, I agree to irrigation department&nbsp;
               <Link underline="always" color="text.primary" href="#">
                 Terms of Service
               </Link>
