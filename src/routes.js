@@ -3,7 +3,6 @@ import { Navigate, Route, Routes, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 //
-import Blog from './pages/Blog';
 import User from './pages/User';
 import Login from './pages/Login';
 import NotFound from './pages/Page404';
@@ -15,26 +14,30 @@ import NewTask from './pages/NewTask';
 import Workflow from './pages/Workflow';
 import Profile from './pages/Profile';
 
+import SubtaskDes from './pages/SubtaskDes';
+
 import RequireAuth from './sections/auth/RequireAuth';
 import LoginAuth from './sections/auth/LoginAuth';
 import Page401 from './pages/Page401';
+import Workflow from './pages/Workflow'
 
 const ROLES_LIST = {
-  "Admin": 2000,
-  "DI": 2001,
-  "CE": 2002,
-  "DIE": 2003,
-  "ME": 2004,
-  "IE": 2005,
-  "EA": 2006,
-  "DmanDIE": 2007,
-  "DmanDI": 2008
-}
+  Admin: 2000,
+  DI: 2001,
+  CE: 2002,
+  DIE: 2003,
+  ME: 2004,
+  IE: 2005,
+  EA: 2006,
+  DmanDIE: 2007,
+  DmanDI: 2008,
+};
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   return (
+
     <Routes >
 
       <Route path='/' element={<LoginAuth />}>
@@ -65,39 +68,11 @@ export default function Router() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="404" element={<NotFound />} />
+
       </Route>
       
       <Route path='/unauth' element={<Page401 />} />
       <Route path='*' element={<Navigate to="/404" />}/>
     </Routes>
   );
-  // return useRoutes([
-  //   {
-  //     path: '/dashboard',
-  //     element: <DashboardLayout />,
-  //     children: [
-  //       { path: 'app', element: <DashboardApp /> },
-  //       {
-  //         path: 'user',
-  //         element: <RequireAuth allowedRoles={[ROLES_LIST.user]} />,
-  //         // children: <User />
-  //         children: {path: '/', element: <User />}
-  //       },
-  //       { path: 'products', element: <Products /> },
-  //       { path: 'blog', element: <Blog /> },
-  //     ],
-  //   },
-  //   {
-  //     path: '/',
-  //     element: <LogoOnlyLayout />,
-  //     children: [
-  //       { path: '/', element: <Navigate to="/dashboard/app" /> },
-  //       { path: 'login', element: <Login /> },
-  //       { path: 'register', element: <Register /> },
-  //       { path: '404', element: <NotFound /> },
-  //       { path: '*', element: <Navigate to="/404" /> },
-  //     ],
-  //   },
-  //   { path: '*', element: <Navigate to="/404" replace /> },
-  // ]);
 }

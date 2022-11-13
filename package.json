@@ -37,16 +37,18 @@
     ]
   },
   "dependencies": {
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@faker-js/faker": "^7.3.0",
+    "@fontsource/roboto": "^4.5.8",
     "@hookform/resolvers": "^2.9.6",
     "@iconify/react": "^3.2.2",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.92",
-    "@mui/material": "^5.9.2",
+    "@mui/material": "^5.10.7",
+    "@mui/styled-engine-sc": "^5.10.6",
     "@testing-library/jest-dom": "^5.16.4",
     "@unicef/material-ui-currency-textfield": "^0.8.6",
     "apexcharts": "^3.35.4",
@@ -69,6 +71,7 @@
     "react-toastify": "^9.0.7",
     "simplebar": "^5.3.8",
     "simplebar-react": "^2.4.1",
+    "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
@@ -89,6 +92,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "jest-watch-typeahead": "^0.6.5",
+    "k6": "^0.0.0",
     "prettier": "^2.7.1",
     "react-test-renderer": "^18.2.0"
   },
