@@ -177,8 +177,7 @@ export default function TaskForm() {
         gridRowGap: '20px',
         padding: '50px 25px 50px 25px',
         borderRadius: '15px',
-        backgroundColor: 'rgba(242,242,240)',
-        boxShadow: '0px 0px 30px 5px #e8e6e1',
+
         marginTop: '20px'
       }}
     >

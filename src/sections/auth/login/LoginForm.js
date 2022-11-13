@@ -66,7 +66,7 @@ export default function LoginForm() {
         }
       );
 
-      console.log(JSON.stringify(response?.data));
+      // console.log(JSON.stringify(response?.data));
 
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
@@ -75,7 +75,7 @@ export default function LoginForm() {
       localStorage.setItem("user", JSON.stringify({ email: data.email, firstname: response?.data.firstname, id: response?.data?.id, roles, accessToken }))
 
       // console.log("aaaaaaa", auth)
-      console.log("lllllllll", JSON.parse(localStorage.getItem("user")))
+      // console.log("lllllllll", JSON.parse(localStorage.getItem("user")))
       // console.log(auth)
 
       navigate(from, { replace: true })

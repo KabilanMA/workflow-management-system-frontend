@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useRoutes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
@@ -7,7 +7,6 @@ import User from './pages/User';
 import Login from './pages/Login';
 import NotFound from './pages/Page404';
 import Register from './pages/Register';
-import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Task from './pages/Task';
 import NewTask from './pages/NewTask';
@@ -19,7 +18,6 @@ import SubtaskDes from './pages/SubtaskDes';
 import RequireAuth from './sections/auth/RequireAuth';
 import LoginAuth from './sections/auth/LoginAuth';
 import Page401 from './pages/Page401';
-import Workflow from './pages/Workflow'
 
 const ROLES_LIST = {
   Admin: 2000,

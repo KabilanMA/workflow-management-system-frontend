@@ -1,7 +1,7 @@
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 // material
-import { Grid, Button, Container, Stack, Typography } from '@mui/material';
+import { Grid, Button, Container, Stack, Typography, Card, Link } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // components
 
@@ -9,7 +9,8 @@ import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 
-import { TaskCard } from '../sections/@dashboard/task';
+import PasswordOverlay from '../sections/@dashboard/profile/PasswordOverlay';
+
 // mock
 // import POSTS from '../_mock/blog';
 
@@ -21,57 +22,32 @@ const UPDATE_URL = `/personal`;
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
-    display: 'flex',
   },
+  [theme.breakpoints.up('sm')]: {
+    margin:'10px'
+  },
+  textAlign: 'center',
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
-  maxWidth: 700,
   margin: 'auto',
   minHeight: '10vh',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
   padding: theme.spacing(0),
 }));
 
 export default function Profile() {
   const storageData = JSON.parse(localStorage.getItem('user'))
-  const [mainTasks, setMainTasks] = useState(null)
+
   const [isLoading, setIsLoading] = useState(true)
+
   const [firstname, setFirstname] = useState(storageData?.firstname)
   const [email, setEmail] = useState(storageData?.email)
   const [lastname, setLastname ] = useState('')
   const axios = useAxiosPrivate();
   const navigate = useNavigate()
   const location = useLocation()
-  console.log(USER_DETAIL_URL);
+
   useEffect(() => {
-    
-    // let isMounted = true
-    // const controller = new AbortController()
-
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await axios.get(ALL_MAINTASKS_URL, {
-    //       signal: controller.signal,
-    //       withCredentials: true
-    //     });
-    //     if (isMounted) setMainTasks(response?.data)
-    //     if (isMounted) setIsLoading(false)
-    //   } catch (err) {
-    //     console.error("ERROR IN USEEFFECT : ")
-    //     console.log(err)
-    //     navigate('/login', { state: { from: location }, replace: true })
-    //   }
-    // }
-
-    // fetchData()
-
-    // return () => {
-    //   isMounted = false 
-    //   controller.abort()
-    // }
     const controller = new AbortController()
     const fetchData = async () => {
       try {
@@ -79,7 +55,8 @@ export default function Profile() {
           signal: controller.signal,
           withCredentials: true
         });
-        console.log(response);
+        setLastname(response.data.lastname);
+
       }catch(err) {
         console.error("ERROR IN USEEFFECT");
         window.location.reload()
@@ -93,68 +70,48 @@ export default function Profile() {
   return (
     <Page title="Profile">
       <RootStyle>
-      <Container>
+      <Card sx={{ position: 'relative', maxWidth:'800px', margin:'auto' }}>
         <ContentStyle>
           <Stack direction="column">
             <Container
               style={{
-                display: 'grid',
-                gridRowGap: '20px',
-                padding: '50px 25px 50px 25px',
-                borderRadius: '15px',
-                backgroundColor: 'rgba(242,242,240)',
-                marginTop: '20px',
-                marginLeft:'10px'
+                padding: '30px 25px 5px 25px',
+                margin:'auto'
               }}
             >
-              <Stack direction="row">
-                <Typography sx={{ color: 'text.secondary', ml:10, textAlign: 'center' }}>Name</Typography>
-                <Typography sx={{ color: 'text.primary', ml:20, textAlign: 'center' }}>{firstname+lastname}</Typography>
-              </Stack>
-              
-              {}
+              <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                <Grid item xs={3}>
+                  <Typography sx={{ color: 'text.secondary', ml:10, textAlign: 'left' }}>Name</Typography>
+                </Grid>
+
+                <Grid item xs={9}>
+                  <Typography sx={{ color: 'text.primary', ml:20, textAlign: 'left' }}>{`${firstname} ${lastname}`}</Typography>
+                </Grid>
+
+                <Grid item xs={3}>
+                  <Typography sx={{ color: 'text.secondary', ml:10, textAlign: 'left' }}>Email</Typography>
+                </Grid>
+
+                <Grid item xs={9}>
+                  <Typography sx={{ color: 'text.primary', ml:20, textAlign: 'left' }}>{`${email}`}</Typography>
+                </Grid>
+
+                <Grid item xs={3}>
+                  <Typography sx={{ color: 'text.secondary', ml:10, textAlign: 'left' }}>Password</Typography>
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography sx={{ color: 'text.primary', ml:20, textAlign: 'left' }}>**********</Typography>
+                </Grid>
+
+                <Grid item xs={12} sx={{position:'right', textAlign:'right'}}>
+                  <PasswordOverlay />
+                </Grid>
+
+              </Grid>
             </Container>
           </Stack>
-
-        {/* <Stack mb={5} direction='row' alignItems="center" justifyContent="space-between"
-          >
-            <TaskForm 
-              sx={{
-                mt:20
-              }}
-              open={newTaskVisible}
-              onClose={setNewTask}
-            />
-        </Stack> */}
-
-        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            Tasks
-          </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            onClick={() => {
-              setNewTask(true);
-              console.log(newTaskVisible)
-            }}
-            to="new"
-            startIcon={<Iconify icon="eva:plus-fill" />}>
-            New Task
-          </Button>
-        </Stack> */}
-
-        {/* <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-            <TaskSearch tasks={POSTS} />
-          </Stack> */}
-
-        {/* <Grid container spacing={3}>
-          {!isLoading && mainTasks.map((maintask, index) => (
-            <TaskCard key={maintask._id} task={maintask} index={index} />
-          ))}
-        </Grid> */}
         </ContentStyle>
-      </Container>
+      </Card>
       </RootStyle>
     </Page>
   );

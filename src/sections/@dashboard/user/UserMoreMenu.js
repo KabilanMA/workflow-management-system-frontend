@@ -54,14 +54,14 @@ export default function UserMoreMenu({ userId, setRefreshKeyFunc }) {
     if (DmanDIEChecked) newRolesList = {...newRolesList, "DmanDIE": 2007} 
     if (DmanDIChecked) newRolesList = {...newRolesList, "DmanDI": 2008} 
 
-    await axios.put(`${CHANGE_USER_ROLES_URL}/${userId}`,
+    const resultRole = await axios.put(`${CHANGE_USER_ROLES_URL}/${userId}`,
       {
         newRolesList
       },
       {
         withCredentials: true
       });
-
+    // console.log(resultRole);
     setAdminChecked(false)
     setDIChecked(false)
     setCEChecked(false)
