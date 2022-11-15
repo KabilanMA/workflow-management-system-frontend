@@ -1,4 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
+import { useState } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Card, Link, Container, Typography } from '@mui/material';
@@ -8,7 +9,7 @@ import useResponsive from '../hooks/useResponsive';
 import Page from '../components/Page';
 import Logo from '../components/Logo';
 // sections
-import { LoginForm } from '../sections/auth/login';
+import { LoginForm, ForgetPassword } from '../sections/auth/login';
 
 // ----------------------------------------------------------------------
 
@@ -60,6 +61,8 @@ export default function Login() {
 
   const mdUp = useResponsive('up', 'md');
 
+  const [passforget, setPassforget] = useState(false)
+  // console.log(passforget);
   return (
     <Page title="Login">
       <RootStyle>
@@ -84,7 +87,7 @@ export default function Login() {
             <img src="/static/illustrations/illustration_login.png" alt="login" />
           </SectionStyle>
         )}
-
+        {(!passforget) ?
         <Container maxWidth="sm">
           <ContentStyle>
             <Typography variant="h4" gutterBottom>
@@ -93,7 +96,27 @@ export default function Login() {
 
             <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography>
 
-            <LoginForm />
+            <LoginForm setPassforget={setPassforget}/>
+
+            {!smUp && (
+              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+                Don’t have an account?{' '}
+                <Link variant="subtitle2" component={RouterLink} to="/register">
+                  Get started
+                </Link>
+              </Typography>
+            )}
+          </ContentStyle>
+        </Container>:
+        <Container>
+          <ContentStyle>
+            <Typography variant="h4" gutterBottom>
+              Get your account back
+            </Typography>
+
+            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your account details below.</Typography>
+
+            <ForgetPassword setPassforget={setPassforget}/>
 
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
@@ -105,6 +128,7 @@ export default function Login() {
             )}
           </ContentStyle>
         </Container>
+      }
       </RootStyle>
     </Page>
   );
