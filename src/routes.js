@@ -13,7 +13,7 @@ import NewTask from './pages/NewTask';
 import Workflow from './pages/Workflow';
 import Profile from './pages/Profile';
 
-import SubtaskDes from './pages/SubtaskDes';
+// import SubtaskDes from './pages/SubtaskDes';
 
 import RequireAuth from './sections/auth/RequireAuth';
 import LoginAuth from './sections/auth/LoginAuth';
@@ -44,9 +44,9 @@ export default function Router() {
 
           <Route path='app' element={<DashboardApp />}/>
 
-          <Route path='task' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin]} />}>
+          {/* <Route path='task' element={<RequireAuth allowedRoles={ROLES_LIST} />}>
             <Route path='/dashboard/task' element={<Task />} />
-          </Route>
+          </Route> */}
 
           <Route path='task/new' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin]} />}>
             <Route path='/dashboard/task/new' element={<NewTask />} />
@@ -56,6 +56,7 @@ export default function Router() {
             <Route path='/dashboard/user' element={<User />} />
           </Route>
 
+          <Route path='/dashboard/task' element={<Task />} />
           <Route path="workflow" element={<Workflow />} />
           <Route path='profile' element={<Profile />}/>
         </Route>
