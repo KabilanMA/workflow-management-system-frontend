@@ -59,6 +59,8 @@ export default function Router() {
           <Route path='/dashboard/task' element={<Task />} />
           <Route path="workflow" element={<Workflow />} />
           <Route path='profile' element={<Profile />}/>
+          <Route path='task' element={<Task />} />
+
         </Route>
       </Route>
 

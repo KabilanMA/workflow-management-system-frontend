@@ -126,12 +126,10 @@ export default function NotificationsPopover() {
         setUnReadNotification(notificationResult.filter((notification) => notification.isUnRead === true));
         setReadNotification(notificationResult.filter((notification) =>false))
       } catch (err) {
+        if(err?.response?.status === 400 || err.response?.status === 204)
+        // console.log(err)
         console.error("ERROR IN USEEFFECT : ")
         // console.log(err)
-        if (err.response.status === 204) { // No content
-        } else {
-          // navigate('/login', { state: { from: location }, replace: true })
-        }
       }
     }
 
