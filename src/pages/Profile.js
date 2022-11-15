@@ -16,9 +16,7 @@ import PasswordOverlay from '../sections/@dashboard/profile/PasswordOverlay';
 
 // ----------------------------------------------------------------------
 
-const ALL_MAINTASKS_URL = "/mainTasks";
-const USER_DETAIL_URL = `/users/${JSON.parse(localStorage.getItem('user'))?.id}`;
-const UPDATE_URL = `/personal`;
+const USER_DETAIL_URL = `/users`;
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -36,6 +34,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 export default function Profile() {
+  let userId = JSON.parse(localStorage.getItem('user'))?.id
   const storageData = JSON.parse(localStorage.getItem('user'))
 
   const [isLoading, setIsLoading] = useState(true)
@@ -51,7 +50,9 @@ export default function Profile() {
     const controller = new AbortController()
     const fetchData = async () => {
       try {
-        const response = await axios.get(USER_DETAIL_URL, {
+        userId = JSON.parse(localStorage.getItem('user'))?.id;
+        
+        const response = await axios.get(`${USER_DETAIL_URL}/${userId}`, {
           signal: controller.signal,
           withCredentials: true
         });

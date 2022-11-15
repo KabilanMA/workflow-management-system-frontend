@@ -1,11 +1,11 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Link, Stack, IconButton, InputAdornment } from '@mui/material';
+import { Stack, IconButton, InputAdornment, Button } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 
@@ -21,19 +21,14 @@ const LOGIN_URL = '/login';
 
 // ----------------------------------------------------------------------
 
-export default function LoginForm() {
+export default function LoginForm(props) {
   const navigate = useNavigate();
-  const location = useLocation()
   const logout = useLogout();
-  const from = location.state?.from?.pathname || "/dashboard/app"
+  const from = "/dashboard/app"
   const axios = useAxiosPrivate()
 
-  const signOut = async () => {
-    await logout();
-    navigate("/dashboard/app")
-  }
-
   const [showPassword, setShowPassword] = useState(false);
+
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -51,6 +46,10 @@ export default function LoginForm() {
     defaultValues,
   });
 
+  const setPassforgetButtonClick = (event) =>{
+    props.setPassforget(true)
+  }
+
   const {
     handleSubmit,
     formState: { isSubmitting },
@@ -66,17 +65,10 @@ export default function LoginForm() {
         }
       );
 
-      // console.log(JSON.stringify(response?.data));
-
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
 
-      // setAuth({ email, pwd, roles, accessToken });
       localStorage.setItem("user", JSON.stringify({ email: data.email, firstname: response?.data.firstname, id: response?.data?.id, roles, accessToken }))
-
-      // console.log("aaaaaaa", auth)
-      // console.log("lllllllll", JSON.parse(localStorage.getItem("user")))
-      // console.log(auth)
 
       navigate(from, { replace: true })
 
@@ -117,10 +109,10 @@ export default function LoginForm() {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-          <RHFCheckbox name="remember" label="Remember me" />
-          <Link variant="subtitle2" underline="hover">
+          {/* <RHFCheckbox name="remember" label="Remember me" /> */}
+          <Button variant="subtitle2" underline="hover" sx={{marginLeft:'auto', marginRight: '0'}} onClick={setPassforgetButtonClick}>
             Forgot password?
-          </Link>
+          </Button>
         </Stack>
 
         <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>

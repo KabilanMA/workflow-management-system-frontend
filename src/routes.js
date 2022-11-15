@@ -44,10 +44,6 @@ export default function Router() {
 
           <Route path='app' element={<DashboardApp />}/>
 
-          <Route path='task' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin]} />}>
-            <Route path='/dashboard/task' element={<Task />} />
-          </Route>
-
           <Route path='task/new' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin]} />}>
             <Route path='/dashboard/task/new' element={<NewTask />} />
           </Route>
@@ -58,6 +54,8 @@ export default function Router() {
 
           <Route path="workflow" element={<Workflow />} />
           <Route path='profile' element={<Profile />}/>
+          <Route path='task' element={<Task />} />
+
         </Route>
       </Route>
 
