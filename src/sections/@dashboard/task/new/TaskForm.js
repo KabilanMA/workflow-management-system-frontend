@@ -86,34 +86,33 @@ export default function TaskForm() {
         ...mainTaskObj,
       })
       const newMainTaskID = response1.data._id
-      console.log("Maintask saved in db: ")
-      console.log(newMainTaskID)
+      // console.log("Maintask saved in db: ")
+      // console.log(newMainTaskID)
 
       allSubTasks.forEach(async subtask => {
-        console.log("subtask to be entered: ")
-        console.log(subtask)
+        // console.log("subtask to be entered: ")
+        // console.log(subtask)
         subtask = { ...subtask, "maintask_id": newMainTaskID }
         try {
           const response2 = await axios.post(SUBTASKS_URL, {
             ...subtask
           })
-          console.log('subtask res: ', response2)
-          const response3 = await axios.post(NOTIFICATION_URL, {type:"push_notification", project_id:newMainTaskID});
-          console.log(response3.data.message);
-          
+          // console.log('subtask res: ', response2)
         } catch (err) {
           isError = true
           console.error("ERROR WHEN SUBMITTING A SUBTASK")
-          console.log(err)
+          // console.log(err);
           if (err.response.status === 400) { // Bad request
             errorToast("Error: Please complete all the fields before submitting")
           }
         }
-      })
+      });
+    const response3 = await axios.post(NOTIFICATION_URL, {type:"push_notification", project_id:newMainTaskID});
+    // console.log(response3.data.message);
     } catch (err) {
       isError = true
       console.error("ERROR WHEN SUBMITTING THE MAINTASK")
-      console.log(err)
+      // console.log(err)
       if (err.response.status === 400) { // Bad request
         errorToast("Error: Please complete all the fields before submitting")
       }

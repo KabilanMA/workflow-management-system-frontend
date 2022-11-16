@@ -9,7 +9,7 @@ const useLogout = () => {
         try {
             const response = await axios.get(LOGOUT_URL,
               );
-              console.log(response);
+            //   console.log(response);
         } catch (err) {
             console.error(err);
         }

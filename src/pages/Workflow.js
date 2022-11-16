@@ -14,7 +14,7 @@ import SubtaskOrderTimeline from "../components/SubtaskOrderTimeline"
 export default function Workflow() {
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const maintaskid = searchParams.get("id")
+  const maintaskid = searchParams.get("id");
   const MAINTASK_URL = `/mainTasks/${maintaskid}`
   const SUBTASKS_OF_MAINTASK_URL = `/subtasks/of-maintask/${maintaskid}`
   const CATEGORIES_URL = `/categories`
