@@ -6,6 +6,7 @@ import { Grid, Container, Typography } from '@mui/material';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { errorToast } from '../components/Toasts';
+import PopoverPopupState from '../components/PopoverPopupState'
 
 // components
 import Page from '../components/Page';
@@ -125,6 +126,7 @@ export default function Workflow() {
             />
           </Grid>}
         </Grid>
+        <PopoverPopupState />
       </Container>
     </Page>
   );
