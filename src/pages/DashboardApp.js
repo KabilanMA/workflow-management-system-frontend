@@ -66,8 +66,6 @@ export default function DashboardApp() {
           withCredentials: true
         })
 
-        console.log(totalUsersData.data)
-
         if (isMounted) {
           setTotalUsers(totalUsersData?.data.total)
           setTotalMaintasks(totalMaintasksData?.data.total)
