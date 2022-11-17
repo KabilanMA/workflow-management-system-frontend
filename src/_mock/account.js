@@ -1,7 +1,9 @@
 // ----------------------------------------------------------------------
+const user = JSON.parse(localStorage.getItem("user"))
 
 const account = {
-  displayName: 'Jaydon Frankie',
+  displayName: user.firstname,
+  // displayName: 'Jaydon Frankie',
   email: 'demo@minimals.cc',
   photoURL: '/static/mock-images/avatars/avatar_default.jpg',
 };
