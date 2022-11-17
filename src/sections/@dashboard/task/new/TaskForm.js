@@ -19,6 +19,7 @@ import SubTask from './SubTask';
 const ALL_CATEGORIES_URL = "/categories"
 const MAINTASK_URL = "/mainTasks"
 const SUBTASKS_URL = "/subtasks"
+const NOTIFICATION_URL = "/notifications"
 
 
 const defaultValues = {
@@ -97,6 +98,9 @@ export default function TaskForm() {
             ...subtask
           })
           console.log('subtask res: ', response2)
+          const response3 = await axios.post(NOTIFICATION_URL, {type:"push_notification", project_id:newMainTaskID});
+          console.log(response3.data.message);
+          
         } catch (err) {
           isError = true
           console.error("ERROR WHEN SUBMITTING A SUBTASK")
@@ -173,8 +177,7 @@ export default function TaskForm() {
         gridRowGap: '20px',
         padding: '50px 25px 50px 25px',
         borderRadius: '15px',
-        backgroundColor: 'rgba(242,242,240)',
-        boxShadow: '0px 0px 30px 5px #e8e6e1',
+
         marginTop: '20px'
       }}
     >
@@ -236,11 +239,11 @@ export default function TaskForm() {
       ))}
 
       <Box
-        sx={{ '& > :not(style)': { m: 1 } }}
-        style={{
-          right: '5px',
-          bottom: '5px',
-          position: 'fixed'
+        sx={{ 
+          '& > :not(style)': { m: 1 },
+          display:'flex',
+          alignItems:'center',
+          justifyContent: 'right'
         }}
       >
         <Fab size='small' color="primary" aria-label="add" onClick={() => createNewTaskField()}>
@@ -250,7 +253,7 @@ export default function TaskForm() {
           <RemoveIcon />
         </Fab>
       </Box>
-
+      
       <button
         type="submit"
         onClick={handleSubmit(onSubmit)}

@@ -11,7 +11,8 @@ SelectTextField.propTypes = {
 
 export default function SelectTextField({ options, label, value, onChange}) {
   return (
-    <TextField 
+    <TextField
+        data-testid='selectionField' 
         select 
         size="small"
         label= {label}

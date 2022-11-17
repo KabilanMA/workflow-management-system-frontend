@@ -1,15 +1,15 @@
 import axios from "../api/axios";
-// import useAuth from "./useAuth";
+
+const LOGOUT_URL = "/logout"
 
 const useLogout = () => {
-    // const { setAuth } = useAuth();
+
 
     const logout = async () => {
-        // setAuth({});
         try {
-            const response = await axios('/logout', {
-                withCredentials: true
-            });
+            const response = await axios.get(LOGOUT_URL,
+              );
+              console.log(response);
         } catch (err) {
             console.error(err);
         }

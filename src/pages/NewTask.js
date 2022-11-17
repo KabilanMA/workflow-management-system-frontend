@@ -14,17 +14,17 @@ import TaskForm from '../sections/@dashboard/task/new/TaskForm';
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
-    display: 'flex',
+    
   },
+  [theme.breakpoints.up('sm')]:{
+    margin:'10px',
+  },
+  textAlign:'center',
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
-  maxWidth: 700,
-  margin: 'auto',
+  margin: '10px',
   minHeight: '10vh',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
   padding: theme.spacing(0),
 }));
 
@@ -38,7 +38,7 @@ export default function NewTask() {
   return (
     <Page title="New Task">
       <RootStyle>
-        <Container>
+        <Card sx={{ position: 'relative', maxWidth:'800px', margin:'auto' }}>
           <ContentStyle>
             <Typography variant="h4" gutterBottom>
               Project Details
@@ -51,7 +51,7 @@ export default function NewTask() {
             
 
             <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to irrigation department&nbsp;
+              By submitting, I agree to irrigation department&nbsp;
               <Link underline="always" color="text.primary" href="#">
                 Terms of Service
               </Link>
@@ -62,7 +62,7 @@ export default function NewTask() {
               .
             </Typography>
           </ContentStyle>
-        </Container>
+        </Card>
       </RootStyle>
     </Page>
   );

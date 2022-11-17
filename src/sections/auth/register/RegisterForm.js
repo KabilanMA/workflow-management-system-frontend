@@ -24,8 +24,9 @@ const REGISTER_URL = '/register';
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
-  // const navigate = useNavigate();
 
+  const from = '/login';
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
@@ -58,13 +59,13 @@ export default function RegisterForm() {
     const lastname = methods.getValues('lastName');
     const email = methods.getValues('email');
     const password = methods.getValues('password');
-    console.log(PWD_REGEX.test(password));
+    // console.log(PWD_REGEX.test(password));
     if (!USER_REGEX.test(firstname) || !USER_REGEX.test(lastname) || !PWD_REGEX.test(password)) {
       errorToast("Not Registered - Please provide correct inputs as per the instructions shown below each field");
     } else {
       // successToast("Registering");
       // console.log("Registering");
-      console.log(email, password)
+      // console.log(email, password)
 
       try {
         const response = await axios.post(REGISTER_URL,
@@ -74,12 +75,16 @@ export default function RegisterForm() {
             withCredentials: true
           }
         );
-        console.log(response?.data);
-        console.log(response?.accessToken);
-        console.log(JSON.stringify(response))
+        // console.log(response?.data);
+        // console.log(response?.accessToken);
+        // console.log(JSON.stringify(response))
         // setSuccess(true);
-        successToast("Registering");
 
+        if(response){
+          successToast("Register Completed. Check your mail.");
+          navigate(from, { replace: true })
+        }
+        
         // setEmail('');
         // setPwd('');
         // setMatchPwd('');
