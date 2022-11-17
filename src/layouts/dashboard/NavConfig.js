@@ -52,10 +52,19 @@ const navConfig = [{
         title: 'Not found',
         path: '/404',
         icon: getIcon('eva:alert-triangle-fill'),
+    }, {
+        title: 'WorkArea',
+        path: 'WorkArea',
+        icon: getIcon('eva:alert-triangle-fill'),
     },
     {
         title: 'SubTask',
-        path: '/dashboard/subtask/6331ac366dab4342dee411c7',
+        path: '/dashboard/subtask',
+        icon: getIcon('eva:alert-triangle-fill'),
+    },
+    {
+        title: 'FileStore',
+        path: '/dashboard/store',
         icon: getIcon('eva:alert-triangle-fill'),
     },
 ];
