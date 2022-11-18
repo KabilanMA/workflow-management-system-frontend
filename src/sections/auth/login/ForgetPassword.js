@@ -13,7 +13,7 @@ import { LoadingButton } from '@mui/lab';
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
 import useLogout from '../../../hooks/useLogOut';
 
-import { errorToast } from '../../../components/Toasts';
+import { errorToast, successToast } from '../../../components/Toasts';
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
 
@@ -63,7 +63,8 @@ export default function ForgetPassword(props) {
       );
 
       if(response){
-        navigate(from, { replace: true })
+        successToast("Check your email inbox");
+        navigate(from, { replace: true });
       }
 
 
