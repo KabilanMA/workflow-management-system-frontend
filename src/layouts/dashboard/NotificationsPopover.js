@@ -106,8 +106,19 @@ export default function NotificationsPopover() {
     return val;
   }
 
-  const loadTimeline = (link) => {
-    navigate(`/${link}`, {replace: true });
+  const loadTimeline = async (link, notiid) => {
+    try{
+      const id = JSON.parse(localStorage.getItem('user')).id
+
+      const res11 = await axios.put(`${ALL_NOTIFICATION_URL}`, {'id':id, 'noti_id':notiid});
+      
+      window.location.href = link
+
+    }catch(err){
+      console.log(err)
+      console.error("Notification set read error:::")
+      navigate('/', { state: { from: location }, replace: true })
+    }
     handleClose();
   }
 
@@ -124,7 +135,7 @@ export default function NotificationsPopover() {
         const notificationResult = createNotificationList(response?.data?.notifications);
         setNotifications(notificationResult);
         setUnReadNotification(notificationResult.filter((notification) => notification.isUnRead === true));
-        setReadNotification(notificationResult.filter((notification) =>false))
+        setReadNotification(notificationResult.filter((notification) => notification.isUnRead === false))
       } catch (err) {
         if(err?.response?.status === 400 || err.response?.status === 204)
         // console.log(err)
@@ -189,7 +200,13 @@ export default function NotificationsPopover() {
             {unReadNotification.map((notification) =>{
               if(count<6) {
                 count+=1;
-                return(<NotificationItem key={notification._id} date-id={notification._id} value={notification._id} notification={notification} onClick={()=>loadTimeline(notification.link)} />);
+                return(<NotificationItem 
+                  key={notification._id} 
+                  date-id={notification._id} 
+                  value={notification._id} 
+                  notification={notification} 
+                  onClick={()=>loadTimeline(notification.link, notification._id)} 
+                  />);
               }
               return null;
             }
@@ -206,23 +223,18 @@ export default function NotificationsPopover() {
           >
             {readNotification.map((notification) =>{
               if(count<6) {
-                return (<NotificationItem key={notification._id} notification={notification} />);
+                return (<NotificationItem 
+                  key={notification._id}
+                  date-id={notification._id}
+                  value={notification._id}
+                  notification={notification} 
+                  onClick={()=>loadTimeline(notification.link, notification._id)}
+                  />);
               }
               return null;
             })}
           </List>)}
         </Scrollbar>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <Box sx={{ p: 1 }}>
-          <Button 
-          fullWidth 
-          disableRipple
-          >
-            View All
-          </Button>
-        </Box>
       </MenuPopover>
     </>
   );
