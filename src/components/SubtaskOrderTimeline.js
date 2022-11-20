@@ -1,5 +1,6 @@
 // @mui
 import PropTypes from 'prop-types';
+import { Link as RouterLink } from 'react-router-dom';
 import { Card, Typography, CardHeader, CardContent } from '@mui/material';
 import { Timeline, TimelineDot, TimelineItem, TimelineContent, TimelineSeparator, TimelineConnector } from '@mui/lab';
 
@@ -15,9 +16,11 @@ SubtaskOrderTimeline.propTypes = {
 };
 
 export default function SubtaskOrderTimeline({ title, subheader, list, ...other }) {
+  
+  
   return (
     <Card {...other}>
-      <CardHeader title={title} subheader={subheader} data-testid="subtaskOrderTimeline-cardHeader" />
+      <CardHeader title={title}  subheader={subheader}   data-testid="subtaskOrderTimeline-cardHeader" />
 
       <CardContent
         sx={{
@@ -50,7 +53,8 @@ OrderItem.propTypes = {
 function OrderItem({ item, isLast }) {
 
   // const { status, title, deadline, assignedEmployees } = item;
-  const { status, title, deadline } = item;
+  const { id,status, title, deadline } = item;
+  console.log(item);
 
   const hasDeadlinePassed = (deadline) => {
     if (deadline.getTime() > (new Date()).getTime()) {
@@ -70,7 +74,9 @@ function OrderItem({ item, isLast }) {
     }
     return 'info' // return 'info' (task not yet finished and the dealine has not yet passed)
   }
-
+  console.log("Param");
+  console.log(id);
+  const toStr=`/dashboard/subtask?id=${id}`;
   return (
     <TimelineItem>
       <TimelineSeparator>
@@ -84,7 +90,7 @@ function OrderItem({ item, isLast }) {
       </TimelineSeparator>
 
       <TimelineContent>
-        <Typography
+        <Typography  to={toStr} component={RouterLink} 
           data-testid="subtaskOrderTimeline-title"
           variant="subtitle2">{title}</Typography>
 

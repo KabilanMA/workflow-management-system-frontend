@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import SendIcon from '@mui/icons-material/Send';
 import CheckIcon from '@mui/icons-material/Check';
@@ -10,20 +11,26 @@ import './drop-file-input.css';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import { ImageConfig } from '../ImageConfig'; 
 import uploadImg from './cloud-upload-regular-240.png';
-
+import account from '../../../_mock/account';
 
 
 const DropFileInput = props => {
+    console.log(props.sub_Id);
+    console.log(props.subtaskName)
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const axios = useAxiosPrivate();
     const UPLOADFILES_URL=`/fileUpload/multiple`;
 
     const wrapperRef = useRef(null);
 
     const [fileList, setFileList] = useState([]);
-    const [title,setTitle]=useState(["Hiniduma Lake Project"]);
     const[sentStatus,setSentStatus]=useState(false);
     console.log("checking Ini");
     console.log(sentStatus);
+    console.log(account.displayName);
+    console.log(account.roles);
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
 
@@ -49,7 +56,14 @@ const DropFileInput = props => {
  
     const uploadFiles = async () => {
         const formData = new FormData();
-        formData.append('title', title);
+        formData.append('title', props.subtaskName);
+        formData.append('subtask_id',props.sub_Id);
+        formData.append('author',account.displayName);
+        formData.append('email',account.email);
+        formData.append('roles',account.roles);
+        formData.append('userID',account.userId);
+       
+
         for (let i = 0; i < fileList.length; i+=1) {
             formData.append('files', fileList[i]);                      
         }
@@ -60,6 +74,7 @@ const DropFileInput = props => {
             toast.success("Succefully Sent");
         }
         else{
+            navigate('/login', { state: { from: location }, replace: true })
             toast.error("Try Again");}
         }
       

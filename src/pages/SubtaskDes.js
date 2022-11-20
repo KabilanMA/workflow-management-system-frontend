@@ -13,9 +13,10 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { Link as RouterLink, useNavigate, useLocation,useParams } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation,useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
+import Account from  "../_mock/account";
+import { fDateTime } from '../utils/formatTime';
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
@@ -25,15 +26,17 @@ import { TaskCard } from '../sections/@dashboard/task';
 
 
 export default function SubtaskDes() {
-  const id="6331ac366dab4342dee411c7";
-  console.log(id);
+  console.log(Account.email);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get("id")
   
-  const SUBTASK_URL=`/subtasks/${id}`;
+  const SUBTASK_URL=`/subtasks/getDetailed/${id}`;
   const ACCEPTANCETEST_URL=`/subtasks/acceptance/${id}`;
 
   const [subtask, setsubtask] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const[empState,setEmpState]=useState(null);
+  const[empStateRole,setEmpStateRole]=useState(null);
   const[acceptancetatus,setAcceptancetatus]=useState(null);
   const [userNames,setUserNames]=useState(null);
   const[loggedUserkey,setloggedUserkey]=useState(null);
@@ -54,8 +57,9 @@ export default function SubtaskDes() {
           withCredentials: true,
         });
         console.log(subtaskData.data);
-        if (isMounted) setsubtask(subtaskData.data);
-        if (isMounted) setEmpState(subtaskData.data.assigned_employees);
+        if (isMounted) setsubtask(subtaskData.data.subTask);
+        if (isMounted) setEmpState(subtaskData.data.namesStatusA);
+        if (isMounted) setEmpStateRole(subtaskData.data.rolesA);
         // if (empState){
 
         // }
@@ -163,10 +167,12 @@ export default function SubtaskDes() {
 //   console.log(emp);
 
 // }
+
+
 if(!subtask && !empState ){
   return null;
 }
-
+const toWorkArea=`/dashboard/WorkArea?id=${id}&st=${subtask.name}`;
   return (
     <Box sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
       <Box sx={{ my: 3, mx: 2 }}>
@@ -178,7 +184,7 @@ if(!subtask && !empState ){
           </Grid>
           <Grid item>
             <Typography gutterBottom variant="h6" component="div">
-             Deadline : {subtask.deadline}
+            Deadline: {fDateTime(subtask.deadline)}
             </Typography>
           </Grid>
         </Grid>
@@ -203,14 +209,15 @@ if(!subtask && !empState ){
     >
 
        {Object.keys(empState).map((key, index)=> (
-        <ListItem>
+        <ListItem key={index}>
         <ListItemIcon>
-          {empState[1]}
+          {/* {empState[1]} */}
         <AccountCircleIcon/>
         </ListItemIcon>
         {/* <ListItemText id="switch-list-label-bluetooth" primary="Bluet" />
         <ListItemText id="switch-list-label-bluetooth" primary="Bluet" /> */}
         <ListItemText>{key}</ListItemText>
+        <ListItemText>{Object.keys(empStateRole[index])}</ListItemText>
         <Switch
           edge="end"
           onChange={handleToggle('bluetooth')}
@@ -221,43 +228,14 @@ if(!subtask && !empState ){
         />
       </ListItem>
       ))}
-      {/* <ListItem>
-        <ListItemIcon>
-          <WifiIcon />
-        </ListItemIcon>
-        <ListItemText id="switch-list-label-wifi" primary="Wi-Fi" />
-        <Switch
-          edge="end"
-          onChange={handleToggle('wifi')}
-          checked={checked.indexOf('wifi') !== -1}
-          inputProps={{
-            'aria-labelledby': 'switch-list-label-wifi',
-          }}
-        />
-      </ListItem>
-      <ListItem>
-        <ListItemIcon>
-          {empState[1]}
-          <BluetoothIcon />
-        </ListItemIcon>
-        <ListItemText id="switch-list-label-bluetooth" primary="Bluetooth" />
-        <Switch
-          edge="end"
-          onChange={handleToggle('bluetooth')}
-          checked={checked.indexOf('bluetooth') !== -1}
-          inputProps={{
-            'aria-labelledby': 'switch-list-label-bluetooth',
-          }}
-        />
-      </ListItem> */}
     </List>
       <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-        <Button>Go to Work Area</Button>
+        <Button to={toWorkArea} component={RouterLink} >Go to Work Area</Button>
       </Box>
       <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-        <Button onClick={() =>{subtaskDone(id)}}>{(acceptancetatus && !(isLoading))? "Accepted":"Accept" }</Button>
+        <Button onClick={() =>{subtaskDone(id)}}>{(acceptancetatus && !(isLoading))? "Task Completed":"Complete Task" }</Button>
 
-        <Button onClick={() =>{subtaskDone(id)}}>Decline</Button>
+        {/* <Button onClick={() =>{subtaskDone(id)}}>Decline</Button> */}
       </Box>
     </Box>
   );

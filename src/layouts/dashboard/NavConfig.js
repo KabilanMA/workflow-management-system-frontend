@@ -15,7 +15,7 @@ const navConfig = [{
     },
     {
         title: 'task',
-        path: '/dashboard/task',
+        path: "/dashboard/task" ,
         icon: getIcon('eva:file-text-fill'),
     },
     {
@@ -48,40 +48,23 @@ const navConfig = [{
     //     path: '/dashboard/subtask/6331ac366dab4342dee411c7',
     //     icon: getIcon('eva:alert-triangle-fill'),
     // },
-    {
-        title: 'workflow',
-        path: '/dashboard/workflow',
-        icon: getIcon('eva:file-text-fill'),
-    },
-    {
-        title: 'login',
-        path: '/login',
-        icon: getIcon('eva:lock-fill'),
-    },
-    {
-        title: 'register',
-        path: '/register',
-        icon: getIcon('eva:person-add-fill'),
-    },
-    {
-        title: 'Not found',
-        path: '/404',
-        icon: getIcon('eva:alert-triangle-fill'),
-    }, {
-        title: 'WorkArea',
-        path: 'WorkArea',
-        icon: getIcon('eva:alert-triangle-fill'),
-    },
-    {
-        title: 'SubTask',
-        path: '/dashboard/subtask',
-        icon: getIcon('eva:alert-triangle-fill'),
-    },
-    {
-        title: 'FileStore',
-        path: '/dashboard/store',
-        icon: getIcon('eva:alert-triangle-fill'),
-    },
+  
+    // {
+    //     title: 'login',
+    //     path: '/login',
+    //     icon: getIcon('eva:lock-fill'),
+    // },
+    // {
+    //     title: 'register',
+    //     path: '/register',
+    //     icon: getIcon('eva:person-add-fill'),
+    // },
+ 
+    // {
+    //     title: 'FileStore',
+    //     path: '/dashboard/store',
+    //     icon: getIcon('eva:alert-triangle-fill'),
+    // },
 ];
 
 export default navConfig;

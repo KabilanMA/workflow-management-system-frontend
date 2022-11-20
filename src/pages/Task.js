@@ -116,7 +116,7 @@ export default function TaskPage() {
               setNewTask(true);
               console.log(newTaskVisible);
             }}
-            to="new"
+        
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
             New Task

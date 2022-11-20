@@ -14,7 +14,7 @@ import NewTask from './pages/NewTask';
 import Workflow from './pages/Workflow';
 import Profile from './pages/Profile';
 
-// import SubtaskDes from './pages/SubtaskDes';
+import SubtaskDes from './pages/SubtaskDes';
 
 import RequireAuth from './sections/auth/RequireAuth';
 import LoginAuth from './sections/auth/LoginAuth';
@@ -57,7 +57,7 @@ export default function Router() {
           <Route path='/dashboard/task' element={<Task />} />
           <Route path="workflow" element={<Workflow />} />
           <Route path='profile' element={<Profile />}/>
-          <Route path='task' element={<Task />} />
+          
 
         </Route>
       </Route>
@@ -77,8 +77,7 @@ export default function Router() {
           <Route path="/dashboard/user" element={<User />} />
         </Route>
 
-        <Route path="products" element={<Products />} />
-        {/* <Route path="blog" element={<Blog />} /> */}
+       
 
         <Route path='workflow' element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME]} />}>
         {/* <Route path="subtask/:id" element={<SubtaskDes/>} /> */}
@@ -99,6 +98,10 @@ export default function Router() {
 
         <Route path="store" element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME]} />}>
           <Route path="/dashboard/store" element={<FileStore />}  />
+        </Route>
+        
+        <Route path="task" element={<RequireAuth allowedRoles={[ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME]} />}>
+          <Route path="/dashboard/task" element={<Task />}  />
         </Route>
 
 
