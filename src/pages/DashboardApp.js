@@ -98,19 +98,19 @@ export default function DashboardApp() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Users" total={totalUsers} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Total Users" total={totalUsers} icon={'mdi:user'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Workflows" total={totalMaintasks} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Total Workflows" total={totalMaintasks} color="info" icon={'octicon:workflow-16'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Completed Subtasks" total={totalCompletedSubtasks} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary title="Completed Subtasks" total={totalCompletedSubtasks} color="warning" icon={'ic:outline-task-alt'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Pending Subtasks" total={totalPendingSubtasks} color="error" icon={'ant-design:bug-filled'} />
+            <AppWidgetSummary title="Pending Subtasks" total={totalPendingSubtasks} color="error" icon={'ic:round-pending-actions'} />
           </Grid>
         </Grid>
       </Container>
