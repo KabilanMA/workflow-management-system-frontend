@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useCookies } from 'react-cookie'
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
@@ -30,6 +31,7 @@ const TOTAL_PENDING_SUBTASKS_URL = "/subtasks/pendingTotal"
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
+  const [cookies, setCookie] = useCookies(['dashboard_data'])
   const axios = useAxiosPrivate()
   const navigate = useNavigate()
   const location = useLocation()
@@ -45,6 +47,15 @@ export default function DashboardApp() {
 
     const fetchData = async () => {
       try {
+
+        if(cookies.dashboard_data) {
+          const data = cookies.dashboard_data
+          setTotalUsers(data[0])
+          setTotalMaintasks(data[1])
+          setTotalCompletedSubtasks(data[2])
+          setTotalPendingSubtasks(data[3])
+          return
+        }
 
         const totalUsersData = await axios.get(TOTAL_USERS_URL, {
           signal: controller.signal,
@@ -65,6 +76,14 @@ export default function DashboardApp() {
           signal: controller.signal,
           withCredentials: true
         })
+        
+        const expires = new Date()
+        expires.setTime(expires.getTime() + (35 * 60 * 1000))
+        const cookieData = [totalUsersData?.data.total,
+        totalMaintasksData?.data.total,
+        totalCompletedSubtasksData?.data.total,
+        totalCompletedSubtasksData?.data.total]
+        setCookie('dashboard_data', cookieData, { path: '/', expires })
 
         if (isMounted) {
           setTotalUsers(totalUsersData?.data.total)
@@ -72,7 +91,7 @@ export default function DashboardApp() {
           setTotalCompletedSubtasks(totalCompletedSubtasksData?.data.total)
           setTotalPendingSubtasks(totalCompletedSubtasksData?.data.total)
         }
-        
+
       } catch (err) {
         console.error("ERROR IN USEEFFECT : ")
         console.log(err)
@@ -87,7 +106,7 @@ export default function DashboardApp() {
       controller.abort()
     }
   }, [])
-  
+
 
   return (
     <Page title="Dashboard">
