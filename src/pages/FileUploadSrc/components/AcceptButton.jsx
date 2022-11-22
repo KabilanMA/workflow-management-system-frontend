@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Fab from '@mui/material/Fab';
-import { green } from "@mui/material/colors";
+import {ToastContainer,toast} from 'react-toastify';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 
@@ -24,7 +24,9 @@ const AcceptButton = () => {
       await axios.post(CommenMailR,{commentB:comment} ,{
         signal: controller.signal,
         withCredentials: true
-      }).then(console.log("Email Sent"));
+      }).then(()=>{
+        toast.success("Commented Via Email");
+      });
       
   }
   catch(err){
