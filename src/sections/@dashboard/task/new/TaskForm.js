@@ -66,7 +66,7 @@ export default function TaskForm() {
 
       let assignedEmployees = {}
 
-      for (let j = 0; j < 100; j += 1) { // 100 is hardcoded ??
+      for (let j = 0; j < 100; j += 1) { 
         if (data[`employee ${i} ${j}`]) {
           const employeeData = data[`employee ${i} ${j}`]
           const empID = employeeData._id
