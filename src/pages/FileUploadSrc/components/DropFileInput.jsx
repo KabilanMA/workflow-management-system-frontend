@@ -19,7 +19,7 @@ const DropFileInput = props => {
     console.log(props.subtaskName)
     const navigate = useNavigate();
     const location = useLocation();
-
+    
     const axios = useAxiosPrivate();
     const UPLOADFILES_URL=`/fileUpload/multiple`;
 
@@ -72,6 +72,7 @@ const DropFileInput = props => {
         if(result.status===201){
             setSentStatus(true)
             toast.success("Succefully Sent");
+            navigate(`/dashboard/store?subtask=${props.sub_Id}&st=${props.subtaskName}`, { state: { from: location }, replace: true })
         }
         else{
             navigate('/login', { state: { from: location }, replace: true })

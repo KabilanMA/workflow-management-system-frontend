@@ -14,12 +14,12 @@ function App() {
     const [searchParams, setSearchParams] = useSearchParams();
 const id = searchParams.get("id");
 const subN=searchParams.get("st");
-const toFileStore=`/dashboard/store?subtask=${id}`
+const toFileStore=`/dashboard/store?subtask=${id}&st=${subN}`;
 
 const images = [
   {
     url: 'https://www.earthrangers.com/public/content/wildwire/hydro-dam.jpg',
-    title: `Access the file store belongs to ${id}`,
+    title: `Access the file store belongs to subtask : ${subN}`,
     width: '100%',
   },
 ];
